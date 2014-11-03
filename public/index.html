@@ -8,12 +8,16 @@ and open the template in the editor.
     <head>
         <title>VIVERSOFT</title>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="css/estilos.css" type="text/css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/base.css" type="text/css" />
+        <link rel="stylesheet" href="css/great.css" type="text/css" media="screen and (min-width:981px)"/>
+        <link rel="stylesheet" href="css/medium.css" type="text/css" media="screen and (min-width:481px) and (max-width: 980px)" />
+        <!--<link rel="stylesheet" href="css/mini.css" type="text/css" media="screen and (max-width: 480px)" />-->
     </head>
     <body>
+        <div id="wrapper">
         <header id="site-header">
-            <div class="menu">
+            <nav class="menu display-great display-medium">
                 <ul>
                     <li>
                         <a href="#">contacto</a>
@@ -28,7 +32,7 @@ and open the template in the editor.
                         <a href="#">administración</a>
                     </li>
                 </ul>
-            </div>
+            </nav>
         </header>
         <section class="contenedor">
             <h1>Bienvenido a VIVERSOFT</h1>
@@ -39,5 +43,6 @@ and open the template in the editor.
         <footer class="footer">
             <p id="p-footer">Proyecto 2º DAW -Miguel Angulo Martínez - &copy; 2014 </p>
         </footer>
+        </div>
     </body>
 </html>
