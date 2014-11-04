@@ -13,18 +13,18 @@
        );
                 
        ORM::configure('mysql:host='.\$CFG['host'].';dbname='.\$CFG['database']);
-       ORM::configure('username',\$CFG[$user]);
-       ORM::configure('password',\$CFG[$password]);
+       ORM::configure('username',\$CFG['user']);
+       ORM::configure('password',\$CFG['password']);
        ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));               
 EOD;
         
         try
         {
-            $file = touch("config.php");
-            $fh = fopen($path,"w+");
+            $file = touch("../../".$path);
+            $fh = fopen("../../".$path,"w+");
             fwrite($fh,$string_config);
             fclose($fh);
-            chmod($path,'0777');#Cambiando permisos
+            chmod("../../".$path,'0777');#Cambiando permisos
             $create_file = true;
             
         } catch (PDOException $e)
@@ -132,13 +132,13 @@ EOD;
         CONSTRAINT `fk_producto_gama`
         FOREIGN KEY (`gama_idgama`)
         REFERENCES `gama` (`idgama`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
         CONSTRAINT `fk_producto_proveedor1`
         FOREIGN KEY (`proveedor_idproveedor`)
         REFERENCES `proveedor` (`idproveedor`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE)
         ENGINE = InnoDB
 EOD;
        
@@ -172,8 +172,8 @@ EOD;
        CONSTRAINT `fk_compra_cliente1`
        FOREIGN KEY (`cliente_idcliente`)
        REFERENCES `cliente` (`idcliente`)
-       ON DELETE NO ACTION
-       ON UPDATE NO ACTION)
+       ON DELETE CASCADE
+       ON UPDATE CASCADE)
        ENGINE = InnoDB
 EOD;
        #tabla lineacompra
@@ -191,13 +191,13 @@ EOD;
        CONSTRAINT `fk_lineacompra_compra1`
        FOREIGN KEY (`compra_idcompra` , `compra_idtransaccion` , `compra_cliente_idcliente`)
        REFERENCES `compra` (`idcompra` , `idtransaccion` , `cliente_idcliente`)
-       ON DELETE NO ACTION
-       ON UPDATE NO ACTION,
+       ON DELETE CASCADE
+       ON UPDATE CASCADE,
        CONSTRAINT `fk_lineacompra_producto1`
        FOREIGN KEY (`producto_idproducto` , `producto_gama_idgama`)
        REFERENCES `producto` (`idproducto` , `gama_idgama`)
-       ON DELETE NO ACTION
-       ON UPDATE NO ACTION)
+       ON DELETE CASCADE
+       ON UPDATE CASCADE)
        ENGINE = InnoDB
 EOD;
        #tabla perfil
@@ -223,8 +223,8 @@ EOD;
         CONSTRAINT `fk_empleado_usuario1`
         FOREIGN KEY (`usuario_idusuario`)
         REFERENCES `usuario` (`idusuario`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
         )
         ENGINE = InnoDB        
 EOD;
@@ -260,18 +260,18 @@ EOD;
         CONSTRAINT `fk_pedido_proveedor1`
         FOREIGN KEY (`proveedor_idproveedor`)
         REFERENCES `proveedor` (`idproveedor`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
         CONSTRAINT `fk_pedido_empleado1`
         FOREIGN KEY (`empleado_idempleado`)
         REFERENCES `empleado` (`idempleado`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
         CONSTRAINT `fk_pedido_transportista1`
         FOREIGN KEY (`transportista_compañia`)
         REFERENCES `transportista` (`compañia`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE)
         ENGINE = InnoDB
 EOD;
         
@@ -289,13 +289,13 @@ EOD;
         CONSTRAINT `fk_lineapedido_pedido1`
         FOREIGN KEY (`pedido_idpedido`)
         REFERENCES `pedido` (`idpedido`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
         CONSTRAINT `fk_lineapedido_producto1`
         FOREIGN KEY (`producto_idproducto` , `producto_gama_idgama` , `producto_proveedor_idproveedor`)
         REFERENCES `producto` (`idproducto` , `gama_idgama` , `proveedor_idproveedor`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE)
         ENGINE = InnoDB
 EOD;
 //Relaciones ISA generalización tabla productos        
