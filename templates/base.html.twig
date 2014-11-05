@@ -3,15 +3,65 @@
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" name="">
         <link rel="stylesheet" type="text/css" href="/libs/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="/css/base.css">
+      
     </head>
     <body>
-        <header>
-            <h1>ViverSoft</h1> 
+        <header class="navbar navbar-default navbar-static-top">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex6-collapse">
+                    <span class="sr-only">Desplegar navegación</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">ViverSoft</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if login %}
+                        <li><a href="#">Salir</a></li>
+                    {% else %}
+                        <li><a href="#">Entrar</a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </header>
-        {% block content %}
-        {% endblock %}
+        <div class="container">
+            {%if login %}
+                <nav>
+                <ol class="breadcrumb">
+                    <li><a href="{{ urlFor('frontpage') }}">Home</a></li>
+                    {% for section in navigation %}
+                    {% endfor %}
+                    <li><a href="#">Library</a></li>
+                    <li class="active">Data</li>
+                </ol>
+                </nav>
+                <div id="sidebar">
+                    <div class="dropdown menu">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a tabindex="-1" href="/alumno">GESTION DE ALUMNOS</a></li>
+                        <li><a tabindex="-1" href="/Libro">GESTION DE LIBROS</a></li>
+                        <li><a class="dropdown-toggle" data-toggle="dropdown" href="/ejemplar">GESTION DE EJEMPLARES</a>
+                            <ul class="dropdown-menu">
+                                <li><a href=#>Listado de Ejemplares</a></li>
+                                <li><a href=#>Entrega lote libros a un alumno</a></li>
+                                <li><a href=#>Alta de Ejemplares</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    </div>
+                </div>  
+            {% endif %}
+                <div id="contenido">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+        </div>
     </body>
 </html>
 

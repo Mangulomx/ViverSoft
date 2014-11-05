@@ -13,16 +13,21 @@ $view->parserOptions = array(
   'debug' => true,
   'cache' => '../cache'
 );
-
+//Hook para añadir lo que la plantilla necesita globalmente
+$app->hook('slim.before', function () use ($app) {
+   $app->view()->appendData(array(
+       'login' => isset($_SESSION['user_id'])
+   )); 
+});
 $view->parserExtensions = array(
     new \Slim\Views\TwigExtension(),
 );
 
-$app->get('/', function() use($app){
+$app->map('/', function() use($app){
     if(isset($_POST['entrar']))
     {
-        $password = $app->request->post('user');
-        $username = $app->request->post('password');
+        $username = $app->request->post('user');
+        $password = $app->request->post('password');
         $user = ORM::for_table('usuario')->where('username',$username)->find_one();
         $isValid = false;
         if($user)
@@ -41,8 +46,25 @@ $app->get('/', function() use($app){
         else
         {
             $_SESSION['user_id'] = $user->idusuario;
+            $app->redirect($app->urlFor('frontpage'));
         }
     }
-    $app->render('login.html.twig',array('title' => 'login'));
-})->name('login');
+    $app->render('login.html.twig',array(
+        'title' => 'login',
+        'url' => $app->urlFor('login')
+        
+        ));
+})->name('login')->via('GET','POST');
+
+#Se va a la portada principal de mi aplicación
+$app->get('/portada', function() use($app)
+{
+    if(!isset($_SESSION['user_id']))
+    {
+        $app->flash('error','Usuario no autorizado');
+        $app->redirect('/');
+    }
+    $app->render('frontpage.html.twig');
+    
+})->name('frontpage');
 $app->run();

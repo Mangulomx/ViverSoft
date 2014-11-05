@@ -4,7 +4,12 @@
     <div class="panel panel-primary">
         <div class="panel-heading center-block">{{title}}</div>
         <div class="panel-body">
-            <form role="form"  method="post">
+            <form role="form"  method="post" action="{{url}}">
+                {% if flash['error'] %}
+                    <div class="alert alert-danger">
+                        {{ flash['error'] }}
+                    </div>
+                {% endif %}
                 <div class="form-group">
                     <label for="username">Nombre de usuario</label>
                     <input class="form-control" type="text" name="user" placeholder="Nombre de usuario" autofocus="true" required/>

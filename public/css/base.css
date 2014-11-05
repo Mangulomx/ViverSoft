@@ -23,13 +23,25 @@ header, footer, #wrapper
     background-color: #a6bcad;
     height: 103px;
 }
-
+#sidebar 
+{
+    float: left;
+    min-height: 650px;
+    min-width: 350px;
+}
 .contenedor {
     background-color: #d0dbd3;
     border-radius: 6px;
     margin: 24px auto;
     padding: 2%;
     width: 70%;
+}
+#contenido 
+{
+    float: left;
+    padding-left: 14px;
+    margin-top: 50px;
+    min-width: 790px;
 }
 .footer 
 {
@@ -65,17 +77,18 @@ header, footer, #wrapper
 
 
 /*Estilos login*/
-.loginbox 
+.loginbox
 {
-width: 500px;
-height: 279px;
-margin: 100px auto;
-border-radius: 10px;
-box-shadow: 10px 8px 26px #888;
+    width: 500px !important;
+    height: 316px;
+    margin: 100px auto;
+    border-radius: 10px;
+    box-shadow: 10px 8px 26px #888;
+    padding: 15px 20px;
 }
-.style1
+.style1 
 {
-    height:20px;
-    margin-bottom:10px;
+    height: 11px;
+    margin-top: 54px;
 }
 /*Fin estilos login*/
