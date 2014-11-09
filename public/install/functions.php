@@ -211,14 +211,15 @@ EOD;
        #tabla empleado
        $tabla_empleado = <<<EOD
        CREATE TABLE IF NOT EXISTS `empleado` (
-       `idempleado` INT NOT NULL AUTO_INCREMENT,
+       `nifempleado` BIGINT NOT NULL,
        `nombre` VARCHAR(45) NOT NULL,
        `apellido1` VARCHAR(50) NOT NULL,
        `apellido2` VARCHAR(50) NOT NULL,
        `email` VARCHAR(100) NOT NULL,
+       `telefono` VARCHAR(10) NULL,
        `puesto` VARCHAR(50) NULL,
-       `usuario_idusuario` INT NOT NULL,
-        PRIMARY KEY (`idempleado`, `usuario_idusuario`),
+       `usuario_idusuario` INT,
+        PRIMARY KEY (`idempleado`, `nifempleado`),
         INDEX `fk_empleado_usuario1_idx` (`usuario_idusuario` ASC),
         CONSTRAINT `fk_empleado_usuario1`
         FOREIGN KEY (`usuario_idusuario`)
@@ -251,11 +252,11 @@ EOD;
         `estado` VARCHAR(15) NOT NULL,
         `comentarios` TEXT NULL,
         `proveedor_idproveedor` INT NOT NULL,
-        `empleado_idempleado` INT NOT NULL,
+        `empleado_nifempleado` BIGINT NOT NULL,
         `transportista_compañia` VARCHAR(50) NOT NULL,
         PRIMARY KEY (`idpedido`, `proveedor_idproveedor`, `empleado_idempleado`, `transportista_compañia`),
         INDEX `fk_pedido_proveedor1_idx` (`proveedor_idproveedor` ASC),
-        INDEX `fk_pedido_empleado1_idx` (`empleado_idempleado` ASC),
+        INDEX `fk_pedido_empleado1_idx` (`empleado_nifempleado` ASC),
         INDEX `fk_pedido_transportista1_idx` (`transportista_compañia` ASC),
         CONSTRAINT `fk_pedido_proveedor1`
         FOREIGN KEY (`proveedor_idproveedor`)
@@ -263,8 +264,8 @@ EOD;
         ON DELETE CASCADE
         ON UPDATE CASCADE,
         CONSTRAINT `fk_pedido_empleado1`
-        FOREIGN KEY (`empleado_idempleado`)
-        REFERENCES `empleado` (`idempleado`)
+        FOREIGN KEY (`empleado_nifempleado`)
+        REFERENCES `empleado` (`nifempleado`)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
         CONSTRAINT `fk_pedido_transportista1`

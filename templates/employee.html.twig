@@ -1,0 +1,49 @@
+{% extends "base.html.twig" %}
+{% block title %}Gestion de empleados{% endblock %}
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel panel-heading">
+            <h3 class="panel-title">Gestión de empleados</h3>
+        </div>
+        <div class="panel-body">
+            <a href='{{ urlFor('AltaEmpleado') }}' class='btn btn-primary pull-right' role='button'>Alta empleado</a>
+            <h2>Listado de empleados</h2>
+            {% if empleados %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class='text-center'>Nombre Empleado</th>
+                        <th class='text-center'>1er apellido</th>
+                        <th class='text-center'>2º apellido</th>
+                        <th class='text-center'>Email</th>
+                        <th class='text-center'>Puesto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for empleado in empleados %}
+                      <tr>
+                          <td>{{ empleado.idempleado }}</td>
+                          <td>{{ empleado.nombre }}</td>
+                          <td>{{ empleado.apellido1 }}</td>
+                          <td>{{ empleado.apellido2 }}</td>
+                          <td>{{ empleado.email }}</td>
+                          <td>{{ empleado.puesto }}</td>
+                          <td>
+                              <a href='#' class='btn btn-primary' role='button'>Editar</a>
+                              <button type='submit' name='borrar' class='btn btn-danger' value='{{ empleado.idempleado }}'>Borrar</button> 
+                          </td>
+                      </tr>
+                        
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <div class='alert alert-warning'>No hay empleados para mostrar</div>
+            {% endif %}
+        </div>
+        
+    </div>
+{% endblock %}
+    
+    
+
