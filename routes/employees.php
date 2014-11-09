@@ -14,7 +14,7 @@ $app->map("/AltaEmpl", function() use($app)
     if(isset($_POST['create-employee']))
     {
         $nif = $app->request->post('inputnif');
-        $nombre = $app->request->post('inputempleado');
+        $nombre = $app->request->post('inputnombre');
         $apellido1 = $app->request->post('inputapellido1');
         $apellido2 = $app->request->post('inputapellido2');
         $email = $app->request->post('inputemail');
@@ -38,17 +38,21 @@ $app->map("/AltaEmpl", function() use($app)
         {
             $error[] = 'El puesto es obligatorio.';
         }
+        if($usuario)
+        {
+            $error[] = 'Ya existe un usuario con este nif.';
+        }
         if(count($error)==0)
         {
             $AltaEmpleado = ORM::for_table('empleado')->create();
-            $AltaEmpleado->nif = $nif;
+            $AltaEmpleado->nieempleado = $nif;
             $AltaEmpleado->nombre = $nombre;
             $AltaEmpleado->apellido1 = $apellido1;
             $AltaEmpleado->apellido2 = $apellido2;
             $AltaEmpleado->puesto = $puesto;
             $AltaEmpleado->email = $email;
             $AltaEmpleado->telefono = $telefono;
-            if($usuario)
+            if(!$usuario)
             {
                 $AltaEmpleado->usuario_idusuario = $usuario;
             }
@@ -69,7 +73,7 @@ function existeUsuario($nif)
     return ORM::for_table('empleado')->
     table_alias('emp')->
     select('emp.usuario_idusuario')->
-    Where('emp.nif',$nif)->
+    Where('emp.nieempleado',$nif)->
     find_one();  
 }
 function listadoEmpleados()
@@ -77,5 +81,5 @@ function listadoEmpleados()
     return ORM::for_table('empleado')->
     table_alias('emp')->
     select('emp.*')->
-    order_by_asc('emp.idempleado')->find_many();
+    order_by_asc('emp.nieempleado')->find_many();
 }
