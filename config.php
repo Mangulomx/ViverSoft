@@ -2,7 +2,7 @@
                 
         $CFG = array(
         'host'=> 'localhost',
-        'database' => 'vivero',
+        'database' => 'viversoft',
         'user' => 'root',
         'password' => 'oretania'
        );

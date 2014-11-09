@@ -81,7 +81,7 @@ EOD;
         #tabla usuario
         $tabla_usuario = <<<EOD
         CREATE TABLE IF NOT EXISTS `usuario` (
-        `idusuario` int NOT NULL AUTO_INCREMENT,
+        `idusuario` int UNSIGNED NOT NULL AUTO_INCREMENT,
         `username` varchar(45) NOT NULL,
         `contrasenia` varchar(255) NOT NULL,
         `email` varchar(45) NOT NULL,
@@ -93,7 +93,7 @@ EOD;
         #tabla gama
          $tabla_gama = <<<EOD
          CREATE TABLE IF NOT EXISTS `gama` (
-        `idgama` VARCHAR(50) NOT NULL,
+        `idgama` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
         `descripcion` TEXT NULL,
         `imagen` BLOB NULL,
         PRIMARY KEY (`idgama`))
@@ -103,40 +103,40 @@ EOD;
        #tabla proveedor
        $tabla_proveedor = <<<EOD
        CREATE TABLE IF NOT EXISTS `proveedor` (
-       `idproveedor` INT NOT NULL,
+       `nieproveedor` BIGINT UNSIGNED NOT NULL,
        `nombreproveedor` VARCHAR(45) NOT NULL,
        `direccion` VARCHAR(150) NOT NULL,
        `telefono` VARCHAR(15) NOT NULL,
-       PRIMARY KEY (`idproveedor`))
+       PRIMARY KEY (`nieproveedor`))
        ENGINE = InnoDB       
 EOD;
      
        #tabla producto
        $tabla_producto = <<<EOD
        CREATE TABLE IF NOT EXISTS `producto` (
-       `idproducto` VARCHAR(15) NOT NULL,
+       `idproducto` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
        `nombre_producto` VARCHAR(70) NOT NULL,
        `nombre_latin` VARCHAR(70) NULL,
-       `peso` DECIMAL(15,2) NULL,
+       `peso` DECIMAL(15,2) UNSIGNED NULL,
        `descatalogado` TINYINT(1) NOT NULL,
        `dimensiones` VARCHAR(15) NOT NULL,
        `descripcion` TEXT NULL,
-       `cantidad_stock` SMALLINT NOT NULL,
-       `precionVenta` DECIMAL(15,2) NOT NULL,
-       `precioProveedor` DECIMAL(15,2) NOT NULL,
-       `gama_idgama` VARCHAR(50) NOT NULL,
-       `proveedor_idproveedor` INT NOT NULL,
-        PRIMARY KEY (`idproducto`, `gama_idgama`, `proveedor_idproveedor`),
-        INDEX `fk_producto_gama_idx` (`gama_idgama` ASC),
-        INDEX `fk_producto_proveedor1_idx` (`proveedor_idproveedor` ASC),
-        CONSTRAINT `fk_producto_gama`
+       `cantidad_stock` SMALLINT UNSIGNED NOT NULL,
+       `precionVenta` DECIMAL(15,2) UNSIGNED NOT NULL,
+       `precioProveedor` DECIMAL(15,2) UNSIGNED NOT NULL,
+       `gama_idgama` int(11) UNSIGNED NOT NULL,
+       `proveedor_nieproveedor` BIGINT UNSIGNED NOT NULL,
+        PRIMARY KEY (`idproducto`),
+        INDEX `fk_producto_gama_igamafk_idx` (`gama_idgama` ASC),
+        INDEX `fk_producto_proveedor_idproveedor_idx` (`proveedor_nieproveedor` ASC),
+        CONSTRAINT `fk_producto_gama_idgama_fk`
         FOREIGN KEY (`gama_idgama`)
         REFERENCES `gama` (`idgama`)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-        CONSTRAINT `fk_producto_proveedor1`
-        FOREIGN KEY (`proveedor_idproveedor`)
-        REFERENCES `proveedor` (`idproveedor`)
+        CONSTRAINT `fk_producto_proveedor_nieproveedor_fk`
+        FOREIGN KEY (`proveedor_nieproveedor`)
+        REFERENCES `proveedor` (`nieproveedor`)
         ON DELETE CASCADE
         ON UPDATE CASCADE)
         ENGINE = InnoDB
@@ -145,7 +145,7 @@ EOD;
        #tabla cliente
        $tabla_cliente = <<<EOD
        CREATE TABLE IF NOT EXISTS `cliente` (
-       `idcliente` INT NOT NULL AUTO_INCREMENT,
+       `niecliente` BIGINT UNSIGNED NOT NULL,
        `nombrecliente` VARCHAR(45) NULL,
        `apellido` VARCHAR(50) NULL,
        `telefono` VARCHAR(45) NOT NULL,
@@ -156,22 +156,22 @@ EOD;
        `region` VARCHAR(50) NULL,
        `pais` VARCHAR(10) NULL,
        `codpostal` VARCHAR(10) NULL,
-       PRIMARY KEY (`idcliente`))
+       PRIMARY KEY (`niecliente`))
        ENGINE = InnoDB
 EOD;
       #tabla compra
        $tabla_compra = <<<EOD
        CREATE TABLE IF NOT EXISTS `compra` (
-       `idcompra` INT NOT NULL,
+       `idcompra` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
        `idtransaccion` VARCHAR(50) NOT NULL,
        `fechacompra` DATE NOT NULL,
-       `ingreso` DECIMAL(15,2) NOT NULL,
-       `cliente_idcliente` INT NOT NULL,
-       PRIMARY KEY (`idcompra`, `idtransaccion`, `cliente_idcliente`),
-       INDEX `fk_compra_cliente1_idx` (`cliente_idcliente` ASC),
-       CONSTRAINT `fk_compra_cliente1`
-       FOREIGN KEY (`cliente_idcliente`)
-       REFERENCES `cliente` (`idcliente`)
+       `ingreso` DECIMAL(15,2) UNSIGNED NOT NULL,
+       `cliente_niecliente` BIGINT UNSIGNED NOT NULL,
+       PRIMARY KEY (`idcompra`),
+       INDEX `compra_cliente_niecliente_fk_idx` (`cliente_niecliente` ASC),
+       CONSTRAINT `fk_compra_cliente_niecliente_fk`
+       FOREIGN KEY (`cliente_niecliente`)
+       REFERENCES `cliente` (`niecliente`)
        ON DELETE CASCADE
        ON UPDATE CASCADE)
        ENGINE = InnoDB
@@ -179,49 +179,41 @@ EOD;
        #tabla lineacompra
        $tabla_lineaCompra = <<<EOD
        CREATE TABLE IF NOT EXISTS `lineacompra` (
-       `cantidad` INT NOT NULL,
-       `preciounidad` DECIMAL(15,2) NOT NULL,
-       `compra_idcompra` INT NOT NULL,
+       `compra_idcompra` INT(11) UNSIGNED NOT NULL,
        `compra_idtransaccion` VARCHAR(50) NOT NULL,
-       `compra_cliente_idcliente` INT NOT NULL,
-       `producto_idproducto` VARCHAR(15) NOT NULL,
-       `producto_gama_idgama` VARCHAR(50) NOT NULL,
-       INDEX `fk_lineacompra_compra1_idx` (`compra_idcompra` ASC, `compra_idtransaccion` ASC, `compra_cliente_idcliente` ASC),
-       INDEX `fk_lineacompra_producto1_idx` (`producto_idproducto` ASC, `producto_gama_idgama` ASC),
-       CONSTRAINT `fk_lineacompra_compra1`
-       FOREIGN KEY (`compra_idcompra` , `compra_idtransaccion` , `compra_cliente_idcliente`)
-       REFERENCES `compra` (`idcompra` , `idtransaccion` , `cliente_idcliente`)
+       `producto_idproducto` INT(11) UNSIGNED NOT NULL,
+       `cantidad` INT UNSIGNED NOT NULL,
+       `preciounidad` DECIMAL(15,2) UNSIGNED NOT NULL,
+       PRIMARY KEY(compra_idcompra, producto_idproducto),
+       INDEX `lineacompra_compra_idcompra_fk_idx` (`compra_idcompra` ASC),
+       INDEX `lineacompra_producto_idproducto_fk_idx` (`producto_idproducto` ASC),
+       CONSTRAINT `lineacompra_compra_fk`
+       FOREIGN KEY (`compra_idcompra`)
+       REFERENCES `compra` (`idcompra`)
        ON DELETE CASCADE
        ON UPDATE CASCADE,
-       CONSTRAINT `fk_lineacompra_producto1`
-       FOREIGN KEY (`producto_idproducto` , `producto_gama_idgama`)
-       REFERENCES `producto` (`idproducto` , `gama_idgama`)
+       CONSTRAINT `fk_lineacompra_producto_idproducto_fk`
+       FOREIGN KEY (`producto_idproducto`)
+       REFERENCES `producto` (`idproducto`)
        ON DELETE CASCADE
        ON UPDATE CASCADE)
        ENGINE = InnoDB
 EOD;
-       #tabla perfil
-       $tabla_perfil = <<<EOD
-       CREATE TABLE IF NOT EXISTS `perfil` (
-       `idperfil` INT NOT NULL AUTO_INCREMENT,
-       `nombre` VARCHAR(70) NOT NULL,
-        PRIMARY KEY (`idperfil`))
-        ENGINE = InnoDB        
-EOD;
+       
        #tabla empleado
        $tabla_empleado = <<<EOD
        CREATE TABLE IF NOT EXISTS `empleado` (
-       `nifempleado` BIGINT NOT NULL,
+       `nieempleado` BIGINT UNSIGNED NOT NULL,
        `nombre` VARCHAR(45) NOT NULL,
        `apellido1` VARCHAR(50) NOT NULL,
        `apellido2` VARCHAR(50) NOT NULL,
        `email` VARCHAR(100) NOT NULL,
        `telefono` VARCHAR(10) NULL,
        `puesto` VARCHAR(50) NULL,
-       `usuario_idusuario` INT,
-        PRIMARY KEY (`idempleado`, `nifempleado`),
+       `usuario_idusuario` INT UNSIGNED,
+        PRIMARY KEY (`nieempleado`),
         INDEX `fk_empleado_usuario1_idx` (`usuario_idusuario` ASC),
-        CONSTRAINT `fk_empleado_usuario1`
+        CONSTRAINT `fk_empleado_usuario_idusuario_fk`
         FOREIGN KEY (`usuario_idusuario`)
         REFERENCES `usuario` (`idusuario`)
         ON DELETE CASCADE
@@ -245,30 +237,30 @@ EOD;
         #tabla pedido
         $tabla_pedido = <<<EOD
         CREATE TABLE IF NOT EXISTS `pedido` (
-        `idpedido` INT NOT NULL,
+        `idpedido` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
         `fechapedido` DATE NOT NULL,
         `fechasuministro` DATE NOT NULL,
         `fechaentrega` DATE NOT NULL,
         `estado` VARCHAR(15) NOT NULL,
         `comentarios` TEXT NULL,
-        `proveedor_idproveedor` INT NOT NULL,
-        `empleado_nifempleado` BIGINT NOT NULL,
+        `proveedor_nieproveedor` BIGINT UNSIGNED NOT NULL,
+        `empleado_nieempleado` BIGINT UNSIGNED NOT NULL,
         `transportista_compañia` VARCHAR(50) NOT NULL,
-        PRIMARY KEY (`idpedido`, `proveedor_idproveedor`, `empleado_idempleado`, `transportista_compañia`),
-        INDEX `fk_pedido_proveedor1_idx` (`proveedor_idproveedor` ASC),
-        INDEX `fk_pedido_empleado1_idx` (`empleado_nifempleado` ASC),
-        INDEX `fk_pedido_transportista1_idx` (`transportista_compañia` ASC),
-        CONSTRAINT `fk_pedido_proveedor1`
-        FOREIGN KEY (`proveedor_idproveedor`)
-        REFERENCES `proveedor` (`idproveedor`)
+        PRIMARY KEY (`idpedido`),
+        INDEX `pedido_proveedor_nieproveedor_fk_idx` (`proveedor_nieproveedor` ASC),
+        INDEX `pedido_empleado_nieempleado_fk_idx` (`empleado_nieempleado` ASC),
+        INDEX `pedido_transportista_compañia_fk_idx` (`transportista_compañia` ASC),
+        CONSTRAINT `pedido_proveedor_nieproveedor_fk`
+        FOREIGN KEY (`proveedor_nieproveedor`)
+        REFERENCES `proveedor` (`nieproveedor`)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-        CONSTRAINT `fk_pedido_empleado1`
-        FOREIGN KEY (`empleado_nifempleado`)
-        REFERENCES `empleado` (`nifempleado`)
+        CONSTRAINT `pedido_empleado_nifempleado_fk`
+        FOREIGN KEY (`empleado_nieempleado`)
+        REFERENCES `empleado` (`nieempleado`)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-        CONSTRAINT `fk_pedido_transportista1`
+        CONSTRAINT `pedido_transportista_compañia_fk`
         FOREIGN KEY (`transportista_compañia`)
         REFERENCES `transportista` (`compañia`)
         ON DELETE CASCADE
@@ -279,22 +271,20 @@ EOD;
         #tabla linea pedido
         $tabla_lineapedido = <<<EOD
         CREATE TABLE IF NOT EXISTS `lineapedido` (
-        `cantidad` INT NOT NULL,
-        `preciounidad` DECIMAL(15,2) NOT NULL,
-        `pedido_idpedido` INT NOT NULL,
-        `producto_idproducto` VARCHAR(15) NOT NULL,
-        `producto_gama_idgama` VARCHAR(50) NOT NULL,
-        `producto_proveedor_idproveedor` INT NOT NULL,
-        INDEX `fk_lineapedido_pedido1_idx` (`pedido_idpedido` ASC),
-        INDEX `fk_lineapedido_producto1_idx` (`producto_idproducto` ASC, `producto_gama_idgama` ASC, `producto_proveedor_idproveedor` ASC),
-        CONSTRAINT `fk_lineapedido_pedido1`
+        `pedido_idpedido` INT(11) UNSIGNED NOT NULL,
+        `producto_idproducto` INT(11) UNSIGNED NOT NULL,
+        `cantidad` INT(11) UNSIGNED NOT NULL,
+        `preciounidad` DECIMAL(15,2) UNSIGNED NOT NULL,
+        INDEX `lineapedido_pedido_idpedido_fk_idx` (`pedido_idpedido` ASC),
+        INDEX `lineapedido_producto_idproducto_fk_idx` (`producto_idproducto` ASC),
+        CONSTRAINT `lineapedido_pedido_idpedido_fk`
         FOREIGN KEY (`pedido_idpedido`)
         REFERENCES `pedido` (`idpedido`)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-        CONSTRAINT `fk_lineapedido_producto1`
-        FOREIGN KEY (`producto_idproducto` , `producto_gama_idgama` , `producto_proveedor_idproveedor`)
-        REFERENCES `producto` (`idproducto` , `gama_idgama` , `proveedor_idproveedor`)
+        CONSTRAINT `fk_lineapedido_producto_idproducto_fk`
+        FOREIGN KEY (`producto_idproducto`)
+        REFERENCES `producto` (`idproducto`)
         ON DELETE CASCADE
         ON UPDATE CASCADE)
         ENGINE = InnoDB
@@ -303,7 +293,7 @@ EOD;
         #tabla plantas
         $tabla_plantas = <<<EOD
         CREATE TABLE IF NOT EXISTS `plantas`(
-        `idproducto` varchar(15) NOT NULL,
+        `idproducto` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
         `exposicion_solar` varchar(45),
         `riego` varchar(45),
         `floracion` varchar(45),
@@ -317,7 +307,7 @@ EOD;
         #tabla semillas
         $tabla_semillas = <<<EOD
         CREATE TABLE IF NOT EXISTS `semillas`(
-        `idproducto` varchar(15) NOT NULL,
+        `idproducto` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
         `genero` varchar(50) NOT NULL,
         `marcoplantacion` varchar(30) not NULL,
         `recoleccion` VARCHAR(70),
@@ -334,7 +324,7 @@ EOD;
         #tabla fitosanitarios
         $tabla_fitosanitarios = <<<EOD
         CREATE TABLE IF NOT EXISTS `fitosanitarios`(
-        `idproducto` varchar(15) NOT NULL,
+        `idproducto` INT(11) UNSIGNED NOT NULL,
         `tipofuncion` varchar(150) NOT NULL,
         `tipoenvase` varchar(30) NOT NULL,
         `composicion` VARCHAR(150) NOT NULL,
@@ -363,8 +353,6 @@ EOD;
             $tablaSQL = $dbh->prepare($tabla_compra);
             $tablaSQL->execute();
             $tablaSQL = $dbh->prepare($tabla_lineaCompra);
-            $tablaSQL->execute();
-            $tablaSQL = $dbh->prepare($tabla_perfil);
             $tablaSQL->execute();
             $tablaSQL = $dbh->prepare($tabla_empleado);
             $tablaSQL->execute();
