@@ -36,7 +36,7 @@ header, footer, #wrapper
     padding: 2%;
     width: 70%;
 }
-#contenido 
+.contenido 
 {
     float: left;
     padding-left: 14px;
@@ -79,8 +79,8 @@ header, footer, #wrapper
 /*Estilos login*/
 .loginbox
 {
-    width: 500px !important;
-    height: 316px;
+    width: 38% !important;
+    height: 20%;
     margin: 100px auto;
     border-radius: 10px;
     box-shadow: 10px 8px 26px #888;
