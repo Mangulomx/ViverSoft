@@ -7,14 +7,48 @@
         </div>
     </div>
     <div class="panel-body">
+        <form role="form" class="form-horizontal" onsubmit="return getcheckBoxValues(this.rusuario);" method="POST" action="{{ urlFor('userDelete') }}">
+        {% if is_admin %} 
+            <a href="#" class="btn btn-primary pull-right">Crear usuario</a>
+        {% endif %}
         <h2>Listado de usuarios</h2>
+        {% if users %}
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th>Seleccionar</th>
+                    <th>#</th>
                     <th>Nombre de usuario</th>
+                    <th>Email</th>
+                    <th>Administrador</th>
                 </tr>
             </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td class="text-center"><input type="checkbox" name="rusuario[]" value="{{user['idusuario']}}" id="{{user['idusuario']}}"/></td>
+                    <td class="text-center">{{ user.idusuario }}</td>
+                    <td class="text-center">{{ user.username }}</td>
+                    <td class="text-center">{{ user.email }}</td>
+                    <td class="text-center">{%if user.admin == 1 %} SI {%else%} NO {% endif %}</td>
+                    {% if user.admin == 1 %}
+                        <td><a href="" class="btn btn-primary" role="button">Modificar</a></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}   
+            </tbody>
+            <tfooter>
+        {% if is_admin %}
+            <tr>
+                <td><button type="submit" class="btn btn-danger text-center" name="eliminar">Eliminar</button></td>
+            </tr>
+        {% endif %}
+            </tfooter>
         </table>
+      {% else %}
+          <div class="alert alert-info">No hay usuarios para mostrar</div>
+      {% endif %}
+      </form>
     </div>
 {% endblock %}
 

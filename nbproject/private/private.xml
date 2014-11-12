@@ -5,6 +5,7 @@
         <group>
             <file>file:/C:/wamp/www/viversoft/public/css/base.css</file>
             <file>file:/C:/wamp/www/viversoft/public/index.php</file>
+            <file>file:/C:/wamp/www/viversoft/templates/users.html.twig</file>
             <file>file:/C:/wamp/www/viversoft/templates/login.html.twig</file>
             <file>file:/C:/wamp/www/viversoft/templates/index.html</file>
             <file>file:/C:/wamp/www/viversoft/routes/frontpage.php</file>
@@ -15,6 +16,7 @@
             <file>file:/C:/wamp/www/viversoft/vendor/slim/slim/Slim/Middleware/PrettyExceptions.php</file>
             <file>file:/C:/wamp/www/viversoft/vendor/slim/slim/Slim/Slim.php</file>
             <file>file:/C:/wamp/www/viversoft/public/install/instalador.php</file>
+            <file>file:/C:/wamp/www/viversoft/vendor/j4mie/idiorm/idiorm.php</file>
             <file>file:/C:/wamp/www/viversoft/vendor/slim/slim/Slim/Route.php</file>
             <file>file:/C:/wamp/www/viversoft/templates/frontpage.html.twig</file>
             <file>file:/C:/wamp/www/viversoft/templates/createEmployee.html.twig</file>

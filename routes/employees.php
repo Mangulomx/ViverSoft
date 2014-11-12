@@ -74,7 +74,7 @@ function existeUsuario($nif)
     table_alias('emp')->
     select('emp.usuario_idusuario')->
     Where('emp.nieempleado',$nif)->
-    find_one();  
+    find_one();
 }
 function listadoEmpleados()
 {

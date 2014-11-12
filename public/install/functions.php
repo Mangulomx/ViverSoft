@@ -85,7 +85,7 @@ EOD;
         `username` varchar(45) NOT NULL,
         `contrasenia` varchar(255) NOT NULL,
         `email` varchar(45) NOT NULL,
-        `admin` tinyint(1) DEFAULT NULL,
+        `admin` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
         PRIMARY KEY (`idusuario`)) 
         ENGINE = InnoDB; 
 EOD;
