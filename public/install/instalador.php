@@ -1,9 +1,9 @@
 <?php
     include_once 'functions.php';
     $create_file = false; #variable para comprobar que el fichero de configuración existe o no
-    $database_created = false;
-    $tables_created = false;
-    $user_created = false;
+    $create_db = false;
+    $create_tables = false;
+    $create_admin = false;
     $path = "config.php";
     if(isset($_POST['instalar']))
     {
@@ -11,17 +11,24 @@
         $db_name = test_input($_POST['dbname']); 
         $user = test_input($_POST['user']);
         $user_pass = test_input($_POST['password0']);
-        #Creacion de la base de datos
-        $database_created = create_db($server,$db_name);
-        #Creacion de las tablas de la base de datos
-        $tables_created = create_tables($server,$db_name);
-        #Creacion del usuario administrador
-        $user_created = create_AdminUser($server,$db_name);
-        #Crear el archivo config.php si no existe
-        if(!file_exists($path))
+         #Crear el archivo config.php si no existe, en caso de que no exista
+        if(!file_exists(".\$path"))
         {
            $create_file = create_config($path,$server,$db_name);
         }
+        #Creacion de la base de datos
+        $database_created = create_db($server,$db_name);
+        #Creacion de las tablas de la base de datos
+        if($database_created) //Si se ha creado correctamente la base de datos
+        {
+            $tables_created = create_tables($server,$db_name); //procedo a crear las tablas
+        }
+        #Creacion del usuario administrador
+        if($tables_created) //Si he creado las tablas correctamente
+        {
+            $user_created = create_AdminUser($server,$db_name); //creo el usuario administrador
+        }
+       
     } 
 ?>
 <!DOCTYPE html>

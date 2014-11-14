@@ -3,8 +3,8 @@
         $CFG = array(
         'host'=> 'localhost',
         'database' => 'viversoft',
-        'user' => 'root',
-        'password' => 'oretania'
+        'user' => 'ut3_user',
+        'password' => 'ut3_pass'
        );
                 
        ORM::configure('mysql:host='.$CFG['host'].';dbname='.$CFG['database']);

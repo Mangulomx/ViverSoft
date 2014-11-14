@@ -1,28 +1,12 @@
-function getcheckBoxValues()
+function deleteconfirm(identificador)
 {
-   
-
-    var valores=[];
-    var inputs = document.getElementsByTagName('input');
-    sw = false;
-    for(var i=0; i<inputs.length; i++)
+    var confirmar = confirm("Quieres borrar el identificador "+identificador);
+    if(!confirmar)
     {
-        if(inputs[i].checked)
-        {
-            valores.push(inputs[i].id);
-            sw = true;
-        }
-    }
-    if(!sw)
-    {
-        alert("Tienes que seleccionar los campos que quieres eliminar");
+       return false; 
     }
     else
     {
-        $subcad = (valores.length == 1) ? "el" : "los";
-        $subcad1 = (valores.length>1) ? "es ":" ";
-        return confirm("Quieres eliminar "+$subcad+" indentificador"+$subcad1+""+valores.join(" , "));
-    } 
-   
+        document.forms[0].action = "/users/"+identificador; 
+    }
 }
-

@@ -30,10 +30,4 @@ require('../routes/frontpage.php');
 require('../routes/users.php');
 #Gestion de empleados de la aplicación
 require('../routes/employees.php');
-
-$app->get('/usuario', function() use($app)
-{
-    
-    
-});
 $app->run();

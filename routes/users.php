@@ -7,22 +7,13 @@ $app->get('/users', function() use ($app)
     $app->render('users.html.twig',array('users' => $user, 'is_admin' => $is_admin));
 })->name('userList');
 
-$app->post('/DeleteUsers', function() use($app)
+$app->post('/users/:id', function($id) use($app)
 {
     if (isset($_POST['eliminar']))
-    {
-      
-        $usuarios = $app->request()->post('rusuario');
-        foreach($usuarios as $valor)
-        {
-            $query = \ORM::for_table('usuario')->find_one($valor);
-            if($query)
-            {
-                $query->delete();
-            }
-        }
-        
-        $app->redirect($app->urlFor('userList'));
+    {    
+        $query = ORM::for_table('usuario')->find_one($id);
+        var_dump($query);die();
+       $app->redirect($app->urlFor('userList'));
     }
 })->name('userDelete');
 
