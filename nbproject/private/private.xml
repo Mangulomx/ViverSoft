@@ -6,10 +6,12 @@
             <file>file:/C:/wamp/www/viversoft/public/index.php</file>
             <file>file:/C:/wamp/www/viversoft/templates/users.html.twig</file>
             <file>file:/C:/wamp/www/viversoft/templates/login.html.twig</file>
+            <file>file:/C:/wamp/www/viversoft/templates/altausers.html.twig</file>
             <file>file:/C:/wamp/www/viversoft/public/js/main.js</file>
             <file>file:/C:/wamp/www/viversoft/templates/index.html</file>
             <file>file:/C:/wamp/www/viversoft/routes/frontpage.php</file>
             <file>file:/C:/wamp/www/viversoft/templates/base.html.twig</file>
+            <file>file:/C:/wamp/www/viversoft/vendor/slim/slim/Slim/Middleware/MethodOverride.php</file>
             <file>file:/C:/wamp/www/viversoft/routes/users.php</file>
             <file>file:/C:/wamp/www/viversoft/public/install/functions.php</file>
             <file>file:/C:/wamp/www/viversoft/routes/session.php</file>

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+{%block title %}Gestión de usuarios{% endblock %}
+{%block content %}
+    <div class='panel panel-default'>
+        <div class='panel panel-heading'>
+            <h3>Gestión de usuarios</h3>
+        </div>
+    
+        <div class='panel panel-body'>
+        {% if flash['error'] %}
+            {% for error in flash['error'] %}
+                <div class="alert alert-info">{{error}}</div>
+            {%endfor%}     
+        {%endif%}
+        <form role='form' action="{{urlFor('updateuser',{'id': user['idusuario']})}}" method="POST" class="form-horizontal">
+        <fieldset>
+            <legend>Editar usuario</legend>
+            <div class="form-group">
+                <label class="col-md-4 col-xs-4 control-label" for="inputuser">Nombre de usuario</label>
+                <div class="col-md-5 col-xs-5">
+                    <input id="inputuser" name="inputuser" value="{{user['username']}}" class="form-control" required type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 col-xs-4 control-label" for="inputpassword">Contraseña</label>
+                <div class="col-md-5 col-xs-5">
+                    <input id="inputpassword" name="inputpassword" class="form-control" required type="password">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 col-xs-4 control-label" for="inputemail">Email</label>
+                    <div class="col-md-5 col-xs-5">
+                        <input id="inputemail" name="inputemail" value="{{user['email']}}" class="form-control" required type="email">
+                    </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 col-xs-4 control-label" for="es_admin">¿Es administrador?</label>
+                <div class="col-md-5 col-xs-5">
+                    <input type="checkbox" name="es_admin" id="es_admin" {% if(user['admin']==1) %} checked="true" {%endif%} />
+                </div>
+            </div>
+            <div class='form-group text-center'>   
+                
+                    <button type="submit" id="update" name="update" class="btn-success btn-large">Modificar</button>
+           
+            </div>  
+        </fieldset>
+        </form>
+        </div>
+    </div>
+{%endblock %}
