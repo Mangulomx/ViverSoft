@@ -12,7 +12,7 @@
                 <div class='alert alert-info'>{{error}}</div>
             {%endfor%}
         {% endif %}
-        <form role="form" class="form-horizontal" method="POST">
+        <form role="form" action="" class="form-horizontal" method="POST">
         {% if is_admin %} 
             <a href="{{urlFor('altausers')}}" class="btn btn-primary pull-right">Crear usuario</a>
         {% endif %}
@@ -37,7 +37,7 @@
                     {% if is_admin %}
                         <td>
                             <a href="{{urlFor('edituser',{'id':user['idusuario']})}}" class="btn btn-primary" role="button">Modificar usuario</a>
-                            <button type='submit' name="delete" id="delete" value="{{user['idusuario']}}" class="btn btn-danger" onclick="deleteconfirm(this.value);">Eliminar</button>
+                            <button type='submit' name="eliminar" value="{{ user.idusuario }}" class="btn btn-danger" onclick="deleteconfirm(this.value);">Eliminar</button>
                         </td>
                     {% endif %}
                 </tr>

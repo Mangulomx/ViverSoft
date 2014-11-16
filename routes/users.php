@@ -8,16 +8,15 @@ $app->get('/users', function() use ($app)
 })->name('userList');
 
 #Borrar usuarios
-$app->post('/users', function() use($app)
+$app->post('/delete', function() use($app)
 { 
-       if(isset($_POST['delete']))
+       if(isset($_POST['eliminar']))
        {
-           $user = ORM::for_table('usuario')->find_one(array('idusuario' => $_POST['delete']));
-          
+           $user = ORM::for_table('usuario')->where('idusuario',$_POST['eliminar'])->find_one();
             if($user)
             {
                 $user->delete();
-                $app->redirect($app->urlFor('userList'));
+                $app->redirect($app->router()->urlFor('userList'));
             }
        }
 })->name("userDelete");

@@ -7,6 +7,6 @@ function deleteconfirm(identificador)
     }
     else
     {
-        document.forms[0].action = "/users"; 
+        document.forms[0].action="/delete"; 
     }
 }

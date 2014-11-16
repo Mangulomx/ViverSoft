@@ -13,12 +13,14 @@ $view->parserOptions = array(
   'debug' => true,
   'cache' => '../cache'
 );
+
 //Hook para añadir lo que la plantilla necesita globalmente
 $app->hook('slim.before', function () use ($app) {
    $app->view()->appendData(array(
        'login' => isset($_SESSION['user_id'])
    )); 
 });
+
 $view->parserExtensions = array(
     new \Slim\Views\TwigExtension(),
 );
