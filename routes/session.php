@@ -1,6 +1,9 @@
 <?php
-
-$app->map('/', function() use($app){
+$app->get('/', function() use($app)
+{
+    $app->redirect('/login');
+});
+$app->map('/login', function() use($app){
     if(isset($_POST['entrar']))
     {
         $username = $app->request->post('user');
@@ -22,7 +25,7 @@ $app->map('/', function() use($app){
         }
         else
         {
-            $_SESSION['user_id'] = $user->idusuario;
+            $_SESSION['user_id'] = $user->id;
             $app->redirect($app->urlFor('frontpage'));
         }
     }
@@ -32,3 +35,10 @@ $app->map('/', function() use($app){
         
         ));
 })->name('login')->via('GET','POST');
+
+$app->get('/logout', function() use($app)
+{
+   //Deshacemos la variable de de sesion
+   unset($_SESSION['user_id']);
+   $app->redirect($app->urlFor('frontpage'));
+})->name('logout');

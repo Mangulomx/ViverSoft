@@ -85,12 +85,12 @@ EOD;
             #tabla usuario
             
             $dbh->exec("CREATE TABLE IF NOT EXISTS `usuario` (
-           `idusuario` int UNSIGNED NOT NULL AUTO_INCREMENT,
+           `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
            `username` varchar(45) NOT NULL,
            `contrasenia` varchar(255) NOT NULL,
            `email` varchar(45) NOT NULL,
            `admin` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-            PRIMARY KEY (`idusuario`)) 
+            PRIMARY KEY (`id`)) 
             ENGINE = InnoDB; ");
             
             #tabla gama
@@ -214,7 +214,7 @@ EOD;
             INDEX `fk_empleado_usuario1_idx` (`usuario_idusuario` ASC),
             CONSTRAINT `fk_empleado_usuario_idusuario_fk`
             FOREIGN KEY (`usuario_idusuario`)
-            REFERENCES `usuario` (`idusuario`)
+            REFERENCES `usuario` (`id`)
             ON DELETE CASCADE
             ON UPDATE CASCADE
             )ENGINE = InnoDB;");

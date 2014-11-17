@@ -6,7 +6,9 @@
             <h3 class="panel-title">Gestión de empleados</h3>
         </div>
         <div class="panel-body">
-            <a href='{{ urlFor('AltaEmpleado') }}' class='btn btn-primary pull-right' role='button'>Alta empleado</a>
+            {%if is_admin %}
+                <a href='{{ urlFor('AltaEmpleado') }}' class='btn btn-primary pull-right' role='button'><i class="fa fa-plus"></i> Alta empleado</a>
+            {% endif %}
             <h2>Listado de empleados</h2>
             {% if empleados %}
             <table class="table table-striped">
@@ -17,6 +19,11 @@
                         <th class='text-center'>2º apellido</th>
                         <th class='text-center'>Email</th>
                         <th class='text-center'>Puesto</th>
+                        {%if is_admin %}
+                        <th class='text-center'>Id usuario</th>
+                        <th class='text-center'>username</th>
+                        <th class='text-center'>email</th>
+                        {%endif%}
                     </tr>
                 </thead>
                 <tbody>
@@ -28,10 +35,15 @@
                           <td>{{ empleado.apellido2 }}</td>
                           <td>{{ empleado.email }}</td>
                           <td>{{ empleado.puesto }}</td>
+                          {%if is_admin %}
+                          <td>{{ empleado['idusario'] }}</td>
+                          <td>{{ empleado['username'] }}</td>
+                          <td>{{ empleado['email'] }}</td>
                           <td>
                               <a href='#' class='btn btn-primary' role='button'>Editar</a>
                               <button type='submit' name='borrar' class='btn btn-danger' value='{{ empleado.idempleado }}'>Borrar</button> 
                           </td>
+                          {% endif %}
                       </tr>
                         
                     {% endfor %}

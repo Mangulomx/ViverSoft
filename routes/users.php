@@ -1,24 +1,33 @@
 <?php
 
-$app->get('/users', function() use ($app)
+$app->get('/users', function() use ($app, $authorized, $users)
 {
-    $user = listadoUsuarios();
-    $is_admin = EsAdministrador();
-    $app->render('users.html.twig',array('users' => $user, 'is_admin' => $is_admin));
+    $app->render('users.html.twig',array('users' => $users, 'is_admin' => $authorized));
 })->name('userList');
 
 #Borrar usuarios
 $app->post('/delete', function() use($app)
-{ 
-       if(isset($_POST['eliminar']))
-       {
-           $user = ORM::for_table('usuario')->where('idusuario',$_POST['eliminar'])->find_one();
-            if($user)
+{
+    if(isset($_POST['eliminar']))
+    {
+        $usuarios = $app->request()->post('rusuario');
+        foreach($usuarios as $valor)
+        {
+            if($_SESSION['user_id'] !== $valor)
             {
-                $user->delete();
-                $app->redirect($app->router()->urlFor('userList'));
+                $query = \ORM::for_table('usuario')->find_one($valor);
+                if($query)
+                {
+                    $query->delete();
+                }
             }
-       }
+            else
+            {
+                $app->flash('error',"No puedes borrar el id ".$_SESSION['user_id']." con que te has logueado");
+            }
+        }
+        $app->redirect($app->urlFor('userList'));
+    }
 })->name("userDelete");
 
 #Alta de usuarios
@@ -126,31 +135,13 @@ $app->post('/users/:id',function($id) use($app)
     
 })->name('updateuser');
 
-function EsAdministrador()
-{
-    $user = ORM::for_table('usuario')->
-    select('usuario.idusuario')->
-    where('idusuario',$_SESSION['user_id'])->
-    find_one();
-    $authorized = false;
-    if($user!==false)
-    {
-        $authorized = ($user->idusuario == 1);
-    }     
-    return $authorized;
-}
-function listadoUsuarios()
-{
-    return ORM::for_table('usuario')->
-    select('usuario.*')->
-    find_many();
-}
+
 //Obtengo los usuarios segun su identificador
 function getUser($id_user)
 {
     return ORM::for_table('usuario')->
     select('usuario.*')->
-    where('idusuario',$id_user)->
+    where('id',$id_user)->
     find_one();
 }
 

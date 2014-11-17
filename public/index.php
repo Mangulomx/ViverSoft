@@ -25,6 +25,31 @@ $view->parserExtensions = array(
     new \Slim\Views\TwigExtension(),
 );
 
+$twig = $view->getInstance();
+
+$authorized = false;
+if(isset($_SESSION['user_id']))
+{
+    $user = ORM::for_table('usuario')->
+    select('usuario.*')->
+    where('id',$_SESSION['user_id'])->
+    find_one();
+    if($user!==false)
+    {
+        $authorized = ($user->admin == 1);
+    }
+    if(count($authorized)>0)
+    {
+        $twig->addGlobal('authorized',$authorized);
+    }
+ }
+ 
+ $users = ORM::for_table('usuario')->find_many();
+ 
+ $twig->addGlobal('users',$users);
+ 
+ 
+ 
 require('../routes/session.php');
 #Se va a la portada principal de mi aplicación
 require('../routes/frontpage.php');

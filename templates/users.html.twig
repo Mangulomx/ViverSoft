@@ -6,21 +6,20 @@
             <h3 class="panel-title">Gestión de usuarios</h3>
         </div>
     </div>
-    <div class="panel-body">
-        {% if flash['error'] %}
-            {%for error in flash['error'] %}
-                <div class='alert alert-info'>{{error}}</div>
-            {%endfor%}
-        {% endif %}
-        <form role="form" action="" class="form-horizontal" method="POST">
+   <div class="panel-body">
+       {% if flash['error'] %}
+           <div class="alert alert-danger">{{flash['error']}}</div>
+       {%endif%}
+        <form role="form" class="form-horizontal" onsubmit="return getcheckBoxValues();return false;" method="POST" action="{{ urlFor('userDelete') }}">
         {% if is_admin %} 
-            <a href="{{urlFor('altausers')}}" class="btn btn-primary pull-right">Crear usuario</a>
+            <a href="{{ urlFor('altausers') }}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Crear usuario</a>
         {% endif %}
         <h2>Listado de usuarios</h2>
         {% if users %}
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th>Seleccionar</th>
                     <th>#</th>
                     <th>Nombre de usuario</th>
                     <th>Email</th>
@@ -30,19 +29,24 @@
             <tbody>
                 {% for user in users %}
                 <tr>
-                    <td class="text-center">{{ user.idusuario }}</td>
+                    <td class="text-center"><input type="checkbox" name="rusuario[]" value="{{user['id']}}" id="{{user['id']}}"/></td>
+                    <td class="text-center">{{ user.id }}</td>
                     <td class="text-center">{{ user.username }}</td>
                     <td class="text-center">{{ user.email }}</td>
                     <td class="text-center">{%if user.admin == 1 %} SI {%else%} NO {% endif %}</td>
                     {% if is_admin %}
-                        <td>
-                            <a href="{{urlFor('edituser',{'id':user['idusuario']})}}" class="btn btn-primary" role="button">Modificar usuario</a>
-                            <button type='submit' name="eliminar" value="{{ user.idusuario }}" class="btn btn-danger" onclick="deleteconfirm(this.value);">Eliminar</button>
-                        </td>
+                        <td><a href="" class="btn btn-primary" role="button"><i class="fa fa-pencil fa-fw"></i> Modificar</a></td>
                     {% endif %}
                 </tr>
                 {% endfor %}   
             </tbody>
+            <tfooter>
+        {% if is_admin %}
+            <tr>
+                <td><button type="submit" class="btn btn-danger text-center" name="eliminar"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button></td>
+            </tr>
+        {% endif %}
+            </tfooter>
         </table>
       {% else %}
           <div class="alert alert-info">No hay usuarios para mostrar</div>
@@ -50,4 +54,3 @@
       </form>
     </div>
 {% endblock %}
-

@@ -1,14 +1,14 @@
 <?php
 #Muestro listado de empleados
-$app->get("/empleado", function() use($app)
+$app->get("/empleado", function() use($app, $authorized)
 {
-    $empleados = listadoEmpleados();
-    $app->render("employee.html.twig", array('empleados' => $empleados));
+    $empleados = listadoEmpleados();  
+    $app->render("employee.html.twig", array('empleados' => $empleados, 'is_admin' => $authorized ));
 })->name('employeeList');
 
 
 #Alta de empleados
-$app->map("/AltaEmpl", function() use($app)
+$app->map("/AltaEmpl", function() use($app, $authorized,$users)
 {
     $error = array();
     if(isset($_POST['create-employee']))
@@ -20,7 +20,8 @@ $app->map("/AltaEmpl", function() use($app)
         $email = $app->request->post('inputemail');
         $puesto = $app->request->post('inputpuesto');
         $telefono = $app->request->post('inputphone');
-        $usuario = existeUsuario($nif);
+        $usuario = $app->request->post('selectuser');
+        var_dump($usuario);die();
         //Valido los posibles errores
         if(empty($nombre))
         {
@@ -38,9 +39,13 @@ $app->map("/AltaEmpl", function() use($app)
         {
             $error[] = 'El puesto es obligatorio.';
         }
-        if($usuario)
+        if(!empty($usuario))
         {
-            $error[] = 'Ya existe un usuario con este nif.';
+            $usuariotmp = ORM::for_table('usuario')->where('idusuario',$usuario)->find_one();
+            if($usuariotmp)
+            {
+                $error[] = 'Ya existe un usuario con ese identificador';
+            }
         }
         if(count($error)==0)
         {
@@ -52,7 +57,7 @@ $app->map("/AltaEmpl", function() use($app)
             $AltaEmpleado->puesto = $puesto;
             $AltaEmpleado->email = $email;
             $AltaEmpleado->telefono = $telefono;
-            if(!$usuario)
+            if(!empty($usuario))
             {
                 $AltaEmpleado->usuario_idusuario = $usuario;
             }
@@ -65,21 +70,18 @@ $app->map("/AltaEmpl", function() use($app)
             $app->redirect($app->urlFor('AltaEmpleado'));
         }
     }
-    $app->render("createEmployee.html.twig");
+    $app->render("createEmployee.html.twig", array('usuarios' => $users, 
+        'is_admin' => $authorized,
+        'users' =>$users));
 })->name('AltaEmpleado')->VIA('GET','POST');
 
-function existeUsuario($nif)
-{
-    return ORM::for_table('empleado')->
-    table_alias('emp')->
-    select('emp.usuario_idusuario')->
-    Where('emp.nieempleado',$nif)->
-    find_one();
-}
 function listadoEmpleados()
 {
+   //Hacer un left join con la tabla de usuario
     return ORM::for_table('empleado')->
     table_alias('emp')->
     select('emp.*')->
-    order_by_asc('emp.nieempleado')->find_many();
+    select_many('u.id','u.email')->
+    left_outer_join('usuario',array('emp.usuario_idusuario', '=', 'u.id'),'u')->find_many();
 }
+

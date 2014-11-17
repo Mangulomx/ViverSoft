@@ -51,16 +51,29 @@
         </div>
         <div class="form-group">
             <label class="col-md-4 control-label" for="inputphone">Telefono</label>  
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <input id="inputphone" name="inputphone" placeholder="Introduce el telefono..." class="form-control input-md" required="" type="text">
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-4 control-label" for="inputpuesto">Puesto</label>  
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <input id="inputpuesto" name="inputpuesto" placeholder="Introduce puesto.." class="form-control input-md" type="text">
              </div>
         </div>
+        {%if is_admin %}
+        <div class='form-group'>
+            <label class='col-md-4 control-label' for='selectuser'>Id usuario</label>
+            <div class='col-md-5'>
+                <select name='selectuser' id='selectuser'>
+                    <option value='0'>Seleccione un id usuario</option>
+                    {% for user in users %}
+                        <option value='{{user.id}}'>{{user.id}}</option>
+                    {% endfor %}
+                </select>
+            </div>     
+        </div>
+        {%endif%}
         <div class="form-group text-center">
             <div class="col-md-8">
                 <button type="submit" id="create-employee" name="create-employee" class="btn-default btn-success">crear empleado</button>

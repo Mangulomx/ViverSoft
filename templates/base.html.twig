@@ -6,6 +6,7 @@
         <meta name="description" content="">
         <meta name="author" name="">
         <link rel="stylesheet" type="text/css" href="/libs/bootstrap/css/bootstrap.min.css">
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="/css/base.css">
       
     </head>
@@ -24,9 +25,9 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     {% if login %}
-                        <li><a href="#">Salir</a></li>
+                        <li><a href="{{ urlFor('logout')}}">Salir</a></li>
                     {% else %}
-                        <li><a href="#">Entrar</a></li>
+                        <li><a href="{{ urlFor('login') }}">Entrar</a></li>
                     {% endif %}
                 </ul>
             </div>
