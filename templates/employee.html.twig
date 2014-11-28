@@ -2,60 +2,57 @@
 {% block title %}Gestion de empleados{% endblock %}
 {% block content %}
     <div class="panel panel-default">
-        <div class="panel panel-heading">
+        <div class="panel-heading">
             <h3 class="panel-title">Gestión de empleados</h3>
         </div>
-        <div class="panel-body">
-            {%if is_admin %}
-                <a href='{{ urlFor('AltaEmpleado') }}' class='btn btn-primary pull-right' role='button'><i class="fa fa-plus"></i> Alta empleado</a>
-            {% endif %}
-            <h2>Listado de empleados</h2>
-            {% if empleados %}
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th class='text-center'>Nombre Empleado</th>
-                        <th class='text-center'>1er apellido</th>
-                        <th class='text-center'>2º apellido</th>
-                        <th class='text-center'>Email</th>
-                        <th class='text-center'>Puesto</th>
-                        {%if is_admin %}
-                        <th class='text-center'>Id usuario</th>
-                        <th class='text-center'>username</th>
-                        <th class='text-center'>email</th>
-                        {%endif%}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for empleado in empleados %}
-                      <tr>
-                          <td>{{ empleado.idempleado }}</td>
-                          <td>{{ empleado.nombre }}</td>
-                          <td>{{ empleado.apellido1 }}</td>
-                          <td>{{ empleado.apellido2 }}</td>
-                          <td>{{ empleado.email }}</td>
-                          <td>{{ empleado.puesto }}</td>
-                          {%if is_admin %}
-                          <td>{{ empleado['idusario'] }}</td>
-                          <td>{{ empleado['username'] }}</td>
-                          <td>{{ empleado['email'] }}</td>
+    </div>
+   <div class="panel-body">
+       {%set Puesto=['Jefe','Empleado','Comercial'] %}
+       {% if flash['error'] %}
+           <div class="alert alert-danger">{{flash['error']}}</div>
+       {%endif%}
+        <form role="form" class="form-horizontal" method="POST" action="{{ urlFor('employeeDelete') }}">
+        {% if is_admin %} 
+            <a href="{{ urlFor('AltaEmpleado') }}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Alta empleado</a>
+        {% endif %}
+        <h2>Listado de empleados</h2>
+        {% if empleados %}
+        <table class="table table-striped col-md-8">
+            <thead>
+                <tr>
+                    <th class='text-center'>Nie</th>
+                    <th class='text-center'>Nombre</th>
+                    <th class='text-center'>1er apellido</th>
+                    <th class='text-center'>2º apellido</th>
+                    <th class='text-center'>Puesto</th>
+                    <th class='text-center'># usuario</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for empleado in empleados %}
+                <tr>
+                          <td class='text-center'>{{ empleado['nieempleado'] }}</td>
+                          <td class='text-center'>{{ empleado['nombre'] }}</td>
+                          <td class='text-center'>{{ empleado['apellido1'] }}</td>
+                          <td class='text-center'>{{ empleado['apellido2'] }}</td>
+                          <td class='text-center'>{{ Puesto[empleado['puesto']] }}</td>
+                          
+                          <td class='text-center'>{%if empleado['usuario_idusuario']!=NULL %}<a data-id="{{ empleado['nieempleado'] }}" onclick="showEmployee(this);">{{ empleado['usuario_idusuario'] }} </a> {% endif %}</td>
                           <td>
-                              <a href='#' class='btn btn-primary' role='button'>Editar</a>
-                              <button type='submit' name='borrar' class='btn btn-danger' value='{{ empleado.idempleado }}'>Borrar</button> 
+                              <a href='{{ urlFor('EditEmployee',{'id':empleado['nieempleado']}) }}' class='btn btn-primary' role='button'>Editar</a>
+                              <button type='submit' name='borrar' class='btn btn-danger' value='{{ empleado['nieempleado'] }}'>Borrar</button> 
                           </td>
-                          {% endif %}
-                      </tr>
-                        
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-                <div class='alert alert-warning'>No hay empleados para mostrar</div>
-            {% endif %}
-        </div>
-        
+                </tr>
+                {% endfor %}   
+            </tbody>
+        </table>
+      {% else %}
+          <div class="alert alert-info">No hay empleados para mostrar</div>
+      {% endif %}
+      </form>
     </div>
 {% endblock %}
-    
-    
-
+{% block modal_body %}
+ <div class="hidden" id="editor-panel">
+ </div>
+{% endblock %}

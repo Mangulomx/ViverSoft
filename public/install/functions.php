@@ -1,28 +1,34 @@
 <?php
     function create_config($path,$server,$db_name)
     {
+        global $user, $user_pass;
         $string_config = <<<EOD
         <?php
                 
-        \$CFG = array(
-        'host'=> '\$server',
-        'database' => '\$db_name',
-        'user' => '\$user',
-        'password' => '\$user_pass'
+         \$CFG = array(
+        'host'=> '$server',
+        'database' => '$db_name',
+        'user' => '$user',
+        'password' => '$user_pass'
        );
-                
-       ORM::configure('mysql:host='.\$CFG['host'].';dbname='.\$CFG['database'].' ;charset=utf8');
-       ORM::configure('username',\$CFG['user']);
-       ORM::configure('password',\$CFG['password']);            
+       ORM::configure(array(
+       'connection_string' => 'mysql:host='.\$CFG['host'].';dbname='.\$CFG['database'],
+       'username' => \$CFG['user'],
+       'password' => \$CFG['password'],
+       'driver_options' => array(PDO::MYSQL_ATTR_INIT_COMMAND=>'set NAMES utf8')));
+       ORM::configure('id_column_overrides', array(
+       'empleado' => 'nieempleado',
+       'proveedor' => 'nieproveedor'
+));
 EOD;
         
         try
         {
-            mkdir(".\$path"); //Creo la ruta en la raiz del fichero mkdir
-            $fh = fopen(".\$path","w+") or die("Error al crear el fichero de configuracion"); //Abro el fichero en mode de escritura
+            touch("../../$path"); //Creo la ruta en la raiz del fichero mkdir
+            $fh = fopen("../../$path","w+") or die("Error al crear el fichero de configuracion"); //Abro el fichero en mode de escritura
             fwrite($fh,$string_config); //escribo en el fichero
             fclose($fh); //cierro el fichero
-            chmod(".\$path",'0777');#Cambiando permisos
+            chmod("../../".$path,'0777');#Cambiando permisos
             $create_file = true;
             
         } catch (PDOException $e)
@@ -208,7 +214,7 @@ EOD;
            `apellido2` VARCHAR(50) NOT NULL,
            `email` VARCHAR(100) NOT NULL,
            `telefono` VARCHAR(10) NULL,
-           `puesto` VARCHAR(50) NULL,
+           `puesto` int(11) NOT NULL,
            `usuario_idusuario` INT UNSIGNED,
             PRIMARY KEY (`nieempleado`),
             INDEX `fk_empleado_usuario1_idx` (`usuario_idusuario` ASC),

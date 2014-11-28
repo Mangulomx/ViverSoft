@@ -1,11 +1,12 @@
 <?php
 
-$app->get('/users', function() use ($app, $authorized, $users)
-{
+$app->get('/users', function() use ($app, $authorized,$users)
+{ 
     $app->render('users.html.twig',array('users' => $users, 'is_admin' => $authorized));
 })->name('userList');
 
 #Borrar usuarios
+/*
 $app->post('/delete', function() use($app)
 {
     if(isset($_POST['eliminar']))
@@ -29,6 +30,7 @@ $app->post('/delete', function() use($app)
         $app->redirect($app->urlFor('userList'));
     }
 })->name("userDelete");
+ */
 
 #Alta de usuarios
 $app->map('/altausers',function() use($app)
@@ -62,6 +64,15 @@ $app->map('/altausers',function() use($app)
             $error[] = "La contraseña debe tener un mínimo de 7 caracteres";
         }
         
+        #Validación del email
+        if(!empty($email))
+        {
+            if(!filter_var($email, FILTER_VALIDATE_EMAL))
+            {
+                $error[] = "El email nos es valido";
+            }
+        }
+        
         #Si no hay errores procedemos a crear el usuario
         if(count($error)==0)
         {
@@ -72,12 +83,13 @@ $app->map('/altausers',function() use($app)
             $user->admin = $is_admin;
             $user->save();
             $app->flash('success','Usuario creado correctamente');
+            $app->redirect('/altausers');
         }
         else 
         {
             $app->flash('error',$error);
         }
-        $app->redirect('/altausers');
+       
     }
     $app->render("altausers.html.twig");
 })->VIA('GET','POST')->name('altausers');
@@ -107,6 +119,21 @@ $app->post('/users/:id',function($id) use($app)
         {
             $error[]="El usuario no puede estar vacio";
         }
+        else
+        {
+            $user = ORM::for_table('usuario')->where('username',$username)->find_one();
+            if(user)
+            {
+                $error[] = "El nombre de usuario ya esta en uso";
+            }
+        }
+        if(!empty($email))
+        {
+            if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+            {
+                $error[] = "La direccion de email no es valida";
+            }
+        }
         if(!empty($password)&&strlen($password)<6)
         {
             $error[] = "La contraseña no puede tener menos de 6 caracteres";
@@ -129,7 +156,7 @@ $app->post('/users/:id',function($id) use($app)
         else
         {
             $app->flash('error',$error);
-            $app->redirect($app->urlFor('edituser'));
+            $app->redirect($app->urlFor('edituser', array('id' => $user['id'])));
         }
     }
     

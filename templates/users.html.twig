@@ -35,7 +35,7 @@
                     <td class="text-center">{{ user.email }}</td>
                     <td class="text-center">{%if user.admin == 1 %} SI {%else%} NO {% endif %}</td>
                     {% if is_admin %}
-                        <td><a href="" class="btn btn-primary" role="button"><i class="fa fa-pencil fa-fw"></i> Modificar</a></td>
+                        <td><a href="{{ urlFor('edituser',{'id':user.id}) }}" class="btn btn-primary" role="button"><i class="fa fa-pencil fa-fw"></i> Modificar</a></td>
                     {% endif %}
                 </tr>
                 {% endfor %}   

@@ -1,0 +1,12 @@
+        <?php
+                
+        $CFG = array(
+        'host'=> '$server',
+        'database' => '$db_name',
+        'user' => '$user',
+        'password' => '$user_pass'
+       );
+                
+       ORM::configure('mysql:host='.$CFG['host'].';dbname='.$CFG['database'].' ;charset=utf8');
+       ORM::configure('username',$CFG['user']);
+       ORM::configure('password',$CFG['password']);            

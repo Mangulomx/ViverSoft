@@ -2,6 +2,7 @@
 #Muestro listado de empleados
 $app->get("/empleado", function() use($app, $authorized)
 {
+    $empleados = array();
     $empleados = listadoEmpleados();  
     $app->render("employee.html.twig", array('empleados' => $empleados, 'is_admin' => $authorized ));
 })->name('employeeList');
@@ -18,11 +19,22 @@ $app->map("/AltaEmpl", function() use($app, $authorized,$users)
         $apellido1 = $app->request->post('inputapellido1');
         $apellido2 = $app->request->post('inputapellido2');
         $email = $app->request->post('inputemail');
-        $puesto = $app->request->post('inputpuesto');
+        $puesto = $app->request->post('selectpuesto');
         $telefono = $app->request->post('inputphone');
         $usuario = $app->request->post('selectuser');
-        var_dump($usuario);die();
         //Valido los posibles errores
+        if(empty($nif))
+        {
+            $error[] = 'El nif no puede estar vacio';
+        }
+        else 
+        {
+            $existe_nif = ORM::for_table('empleado')->where('nieempleado',$nif)->find_one();
+            if($existe_nif)
+            {
+                $error[] = 'El nif para ese empleado ya existe';
+            }
+        }
         if(empty($nombre))
         {
             $error[] = 'El nombre del empleado es obligatorio.';
@@ -35,16 +47,20 @@ $app->map("/AltaEmpl", function() use($app, $authorized,$users)
         {
             $error[] = 'El segundo apellido es obligatorio.';
         }
-        if(empty($puesto))
+        if(!filter_var($email,FILTER_VALIDATE_EMAIL))
         {
-            $error[] = 'El puesto es obligatorio.';
+            $error[]="El email es incorrecto.";
         }
-        if(!empty($usuario))
+        if($puesto =='-1')
         {
-            $usuariotmp = ORM::for_table('usuario')->where('idusuario',$usuario)->find_one();
+            $error[] = 'Debes seleccionar un puesto.';
+        }
+        if($usuario!='-1')
+        {
+            $usuariotmp = ORM::for_table('empleado')->where('usuario_idusuario',$usuario)->find_one();
             if($usuariotmp)
             {
-                $error[] = 'Ya existe un usuario con ese identificador';
+                $error[] = 'Ya existe un empleado con dicho usuario';
             }
         }
         if(count($error)==0)
@@ -57,7 +73,7 @@ $app->map("/AltaEmpl", function() use($app, $authorized,$users)
             $AltaEmpleado->puesto = $puesto;
             $AltaEmpleado->email = $email;
             $AltaEmpleado->telefono = $telefono;
-            if(!empty($usuario))
+            if($usuario!='-1')
             {
                 $AltaEmpleado->usuario_idusuario = $usuario;
             }
@@ -75,13 +91,154 @@ $app->map("/AltaEmpl", function() use($app, $authorized,$users)
         'users' =>$users));
 })->name('AltaEmpleado')->VIA('GET','POST');
 
+
+#Muestro los empleados según su identificador
+$app->get('/editEmp/:id', function($id) use($app,$users)
+{
+    $empleado = getEmpleado($id);
+    $app->render('editEmployee.html.twig', array('empleado' => $empleado,
+    'usuarios' => $users));
+})->name('EditEmployee');
+
+#Actualizar empleado según su identificador
+$app->post('/editEmp/:id', function($id) use($app)
+{
+    $error = array();
+    $expr_tlfno = "/^[9|6|7][0-9]{8}$/";
+    if(isset($_POST['update']))
+    {
+        $nie = $app->request()->post('inputnie');
+        $nombre = $app->request()->post('inputname');
+        $apellido1 = $app->request()->post('inputsurname');
+        $apellido2 = $app->request()->post('inputsurname1');
+        $email = $app->request()->post('inputemail');
+        $puesto = (int)$app->request()->post('selectpuesto');
+        $telefono = $app->request()->post('inputphone');
+        $usuario = $app->request()->post('selectusuario');
+        #Valido si hay errores
+        if(empty($nie))
+        {
+            $error[] = "El nie no puede estar vacio";
+        }
+        else
+        {
+            $empleado = ORM::for_table('empleado')->
+            where('nieempleado',$nie)->find_one();
+            if($empleado)
+            {
+                $error[] = "Ya existe un empleado con este nie";
+            }
+        }
+        if(empty($nombre))
+        {
+            $error[] = "El nombre del empleado no puede estar vacio";
+        }
+        if(empty($apellido1))
+        {
+            $error[] = "El apellido 1 no puede estar vacio";
+        }
+        if(empty($apellido2))
+        {
+            $error[] = "El apellido 2 no puede estar vacio";
+        }
+        if(!empty($email))
+        {
+            if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+            {
+                
+                $error[] = "El email no es valido";
+            }
+        }
+        if(!empty($telefono))
+        {
+            if(!preg_match($expr_tlfno, $telefono))
+            {
+                $error[] = "El teléfono no es correcto";
+            }
+        }
+        if($puesto===-1)
+        {
+            $error[] = "Debes seleccionar un puesto";
+        }
+        else
+        {
+            $es_jefe = ORM::for_table('empleado')->where('puesto',0)->find_one();
+            if($es_jefe)
+            {
+                if($puesto===0)
+                {
+                    $error[] = "Ya existe un jefe, no puedes crea otro";
+                }
+            }
+        }
+        #Si no hay errores procedo a crear el empleado
+      
+        if(count($error)==0)
+        {
+            $empleado = ORM::for_table('empleado')->create();
+            $empleado->nieempleado = $nie;
+            $empleado->nombre = $nombre;
+            $empleado->apellido1 = $apellido1;
+            $empleado->apellido2 = $apellido2;
+            $empleado->email = $email;
+            if(!empty($telefono))
+            {
+                $empleado->telefono = $telefono;
+            }
+            if($usuario!=='')
+            {
+                $empleado->usuario_idusuario = (int)$usuario;
+            }
+            if($puesto!==-1)
+            {
+                $empleado->puesto = $puesto;    
+            }
+            $empleado->save();
+            $app->redirect($app->urlFor('employeeList'));
+        }
+        else
+        {
+            $app->flash('error',$error);            
+            $app->redirect($app->urlFor('updateEmployee',array('id' => $id)));
+        }
+    }
+    
+})->name('updateEmployee');
+  
+
+#Borro el empleado
+$app->post("/delete", function() use($app)
+{
+    if(isset($_POST['borrar']))
+    {
+        $empleado = ORM::for_table('empleado')->find_one($_POST['borrar']);
+        if($empleado)
+        {
+            $empleado->delete();
+            $app->redirect($app->urlFor('employeeList'));
+        }
+    }
+})->name('employeeDelete');
+
 function listadoEmpleados()
 {
    //Hacer un left join con la tabla de usuario
     return ORM::for_table('empleado')->
     table_alias('emp')->
     select('emp.*')->
-    select_many('u.id','u.email')->
-    left_outer_join('usuario',array('emp.usuario_idusuario', '=', 'u.id'),'u')->find_many();
+    select('u.*')->
+    left_outer_join('usuario',array('emp.usuario_idusuario', '=', 'u.id'),'u')->find_array();
+}
+
+function getEmpleado($identificador)
+{
+    //Hago un left join con la table de usuario y obtengo el identificador
+    return ORM::for_table('empleado')->
+    table_alias('emp')->
+    select('emp.*')->
+    select('emp.email','emailemp')->
+    select('u.*')->
+    where('emp.nieempleado',$identificador)->
+    left_outer_join('usuario',array('emp.usuario_idusuario', '=', 'u.id'),'u')->order_by_asc('emp.nieempleado')->find_one();
 }
 

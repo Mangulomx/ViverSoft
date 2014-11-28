@@ -12,7 +12,7 @@
         $user = test_input($_POST['user']);
         $user_pass = test_input($_POST['password0']);
          #Crear el archivo config.php si no existe, en caso de que no exista
-        if(!file_exists(".\$path"))
+        if(!file_exists("../../".$path))
         {
            $create_file = create_config($path,$server,$db_name);
         }

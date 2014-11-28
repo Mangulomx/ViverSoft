@@ -4,7 +4,7 @@
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
-        <meta name="author" name="">
+        <meta name="author" name="Miguel Angulo Martínez">
         <link rel="stylesheet" type="text/css" href="/libs/bootstrap/css/bootstrap.min.css">
         <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="/css/base.css">
@@ -78,9 +78,31 @@
             </section>
         {% endif %}  
         </div>
-                <script src="/libs/bootstrap/js/bootstrap.js"></script>
-                <script src="js/main.js"></script>
-                
+        <div class="modal fade" id="box-modal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">{% block modal_title %}<!-- Aqui va el titulo de la pagina modal --> {% endblock %}</h4>
+                    </div>
+                    <div class="modal-body">
+                    {% block modal_body %} 
+                    <!--Aqui va el cuerpo de la página modal -->
+                    {% endblock %}   
+                    </div>
+                    <div class="modal-footer">
+                    {% block modal_footer %}
+                    <!-- Aquí va el pie de la pagina modal -->
+                    {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/libs/jquery/jquery-1.11.1.min.js"></script>
+        <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/js/main.js"></script>
+        {% block modal_foot %}
+        {% endblock %}      
     </body>
 </html>
 

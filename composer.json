@@ -4,6 +4,7 @@
         "slim/views": "0.1.*",
         "twig/twig": "1.*",
         "j4mie/idiorm": "1.4.*",
-        "ircmaxell/password-compat": "1.*"
+        "ircmaxell/password-compat": "1.*",
+        "beelab/bowerphp": "0.1.*@alpha"           
     }
 }

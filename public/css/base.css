@@ -91,3 +91,11 @@ header, footer, #wrapper
     height: 8px;
 }
 /*Fin estilos login*/
+
+.loader
+{
+    background-image: url('../img/ajax.loader.gif');
+    background-repeat:no-repeat;
+    background-position:center;
+    height:100px;
+}

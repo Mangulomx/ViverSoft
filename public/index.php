@@ -38,18 +38,11 @@ if(isset($_SESSION['user_id']))
     {
         $authorized = ($user->admin == 1);
     }
-    if(count($authorized)>0)
-    {
-        $twig->addGlobal('authorized',$authorized);
-    }
+   
+    $twig->addGlobal('authorized',$authorized);
  }
- 
- $users = ORM::for_table('usuario')->find_many();
- 
- $twig->addGlobal('users',$users);
- 
- 
- 
+$users = ORM::for_table('usuario')->find_many();
+$twig->addGlobal('users',$users);
 require('../routes/session.php');
 #Se va a la portada principal de mi aplicación
 require('../routes/frontpage.php');

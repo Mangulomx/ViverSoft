@@ -3,15 +3,29 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/wamp/www/viversoft/vendor/slim/slim/Slim/Slim.php</file>
-            <file>file:/C:/wamp/www/viversoft/public/index.php</file>
-            <file>file:/C:/wamp/www/viversoft/templates/users.html.twig</file>
-            <file>file:/C:/wamp/www/viversoft/templates/edituser.html.twig</file>
-            <file>file:/C:/wamp/www/viversoft/templates/altausers.html.twig</file>
-            <file>file:/C:/wamp/www/viversoft/templates/createEmployee.html.twig</file>
-            <file>file:/C:/wamp/www/viversoft/routes/employees.php</file>
-            <file>file:/C:/wamp/www/viversoft/templates/employee.html.twig</file>
-            <file>file:/C:/wamp/www/viversoft/routes/users.php</file>
+            <file>file:/C:/wamp/www/viver/templates/employee.html.twig</file>
+            <file>file:/C:/wamp/www/viver/public/index.php</file>
+            <file>file:/C:/wamp/www/viver/routes/employees.php</file>
+            <file>file:/C:/wamp/www/viver/templates/editEmployee.html.twig</file>
+            <file>file:/C:/wamp/www/viver/vendor/slim/slim/Slim/Middleware.php</file>
+            <file>file:/C:/wamp/www/viver/vendor/slim/slim/Slim/Router.php</file>
+            <file>file:/C:/wamp/www/viver/public/js/main.js</file>
+            <file>file:/C:/wamp/www/viver/templates/users.html.twig</file>
+            <file>file:/C:/wamp/www/viver/vendor/slim/slim/Slim/Middleware/Flash.php</file>
+            <file>file:/C:/wamp/www/viver/public/install/functions.php</file>
+            <file>file:/C:/wamp/www/viver/vendor/slim/slim/Slim/View.php</file>
+            <file>file:/C:/wamp/www/viver/public/install/instalador.php</file>
+            <file>file:/C:/wamp/www/viver/templates/altausers.html.twig</file>
+            <file>file:/C:/wamp/www/viver/vendor/slim/slim/Slim/Middleware/PrettyExceptions.php</file>
+            <file>file:/C:/wamp/www/viver/vendor/slim/slim/Slim/Slim.php</file>
+            <file>file:/C:/wamp/www/viver/routes/session.php</file>
+            <file>file:/C:/wamp/www/viver/routes/users.php</file>
+            <file>file:/C:/wamp/www/viver/templates/edituser.html.twig</file>
+            <file>file:/C:/wamp/www/viver/templates/base.html.twig</file>
+            <file>file:/C:/wamp/www/viver/templates/createEmployee.html.twig</file>
+            <file>file:/C:/wamp/www/viver/templates/frontpage.html.twig</file>
+            <file>file:/C:/wamp/www/viver/vendor/slim/slim/Slim/Route.php</file>
+            <file>file:/C:/wamp/www/viver/public/ajax.php</file>
         </group>
     </open-files>
 </project-private>

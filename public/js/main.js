@@ -1,3 +1,9 @@
+ var modalBox = $("#box-modal"),
+        modalBoxObject = modalBox[0],
+        modaltitle = modalBoxObject.getElementsByClassName('modal-title')[0],
+        modalContent = modalBoxObject.getElementsByClassName('modal-body')[0],
+        modalFooter = modalBoxObject.getElementsByClassName('modal-footer')[0];
+
 function getcheckBoxValues()
 {
    
@@ -19,10 +25,21 @@ function getcheckBoxValues()
     }
     else
     {
-        $subcad = (valores.length == 1) ? "el" : "los";
+        $subcad = (valores.length === 1) ? "el" : "los";
         $subcad1 = (valores.length>1) ? "es ":" ";
         return confirm("Quieres eliminar "+$subcad+" indentificador"+$subcad1+""+valores.join(" , "));
         document.forms[0].submit();
     } 
    
+}
+function showEmployee(element)
+{
+    $("#editor-panel").removeClass('hidden'); 
+    modalBox.modal("show");
+    modaltitle.innerHTML = "Visualizar datos empleado";
+    nie = element.getAttribute('data-id');
+    $.get("ajax.php?id="+nie+"&opcion=1",function(data)
+    {
+        document.getElementById('editor-panel').innerHTML = data;
+    });
 }
