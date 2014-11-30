@@ -32,14 +32,162 @@ function getcheckBoxValues()
     } 
    
 }
-function showEmployee(element)
+
+function showEmployee(element,opcion)
 {
     $("#editor-panel").removeClass('hidden'); 
     modalBox.modal("show");
     modaltitle.innerHTML = "Visualizar datos empleado";
     nie = element.getAttribute('data-id');
-    $.get("ajax.php?id="+nie+"&opcion=1",function(data)
+    $.get("ajax.php?id="+nie+"&opcion="+opcion,function(data)
     {
         document.getElementById('editor-panel').innerHTML = data;
     });
 }
+/* Validacion de los campos del formulario */
+function validar(form,fieldsForm)
+{
+    var arrayFields = ["email","select-one","password"];
+    enviar = true;
+    var errores="";
+    for(var i=0; i<form.elements.length; i++)
+    {
+        if((arrayFields.indexOf(form.elements[i].type)!==-1)||(form.elements[i].type=="text" && form.elements[i].required==true))
+        {
+ 
+            elementClassName = form.elements[i].parentNode.parentNode.className;
+            if(form.elements[i].value.length == 0)
+            {
+                errores+="\n El campo "+form.elements[i].name + " no puede estar vacio";
+                enviar = false;  
+            }  
+            if(elementClassName.indexOf('has-error')!==-1)
+            {
+                if(form.elements[i].type==="select-one")
+                {
+                    errores+="\nDebes seleccionar un "+fieldsForm[i];
+                }
+                else
+                {
+                    errores+="\n Dato erroneo en el campo "+fieldsForm[i];
+                }
+                enviar = false;
+            }
+        } 
+    }
+    if(!enviar)
+    {
+        alert(errores);
+    }
+    return enviar;
+}
+function seleccionPuesto(valor)
+{
+    enviar = true;
+    if(valor==="-1")
+    {
+        enviar = false;
+    }
+    return enviar;
+}
+function comprobarLetraDni(parametro)
+{
+    cadena = "TRWAGMYFPDXBNJZSQVHLCKET";
+    correcto = true;
+    var pattern = /^[0-9]{8}([A-Z]{1})$/;
+    if(pattern.test(parametro))
+    {
+        dni = parametro.substring(0, parametro.length -1);
+        charLetra = parametro.substring(parametro.length-1);
+        var patternDni = /^[0-9]{8}$/;
+        console.log(patternDni.test(dni));
+        if(!isNaN(charLetra)||!patternDni.test(dni))
+        {
+            correcto = false;
+        }
+        else
+        {
+            posicion = dni % 23;
+            letra = cadena.substring(posicion,posicion+1);
+            if(letra !== charLetra.toUpperCase())
+            {
+                correcto = false;
+            }
+        }
+    }
+    else
+    {
+        correcto = false;
+    }
+    
+    return correcto;
+}
+
+function comprobarTelefono(telefono)
+{
+   
+    return /^\d{9}$/.test(telefono);
+    
+}
+function bien(parametro)
+{
+    parametro.parentNode.parentNode.className = "form-group has-success";
+}
+function mal(parametro)
+{
+    parametro.parentNode.parentNode.className = "form-group has-error";
+}
+
+/*Fin */
+/*Validación formulario usuarios */
+function contieneEspacios(str)
+{
+    var espacios = false;
+    for(var i=0; i<str.length; i++)
+    {
+        if(str.charAt(i) === " ")
+        {
+            espacios = true;
+            break;
+        }
+    }
+    return espacios;
+}
+
+function validarCampo(valor, expr_reg, campo)
+{
+    var errores="";
+    error = true;
+    //Compruebo que el valor del campo no este vacio
+    if(valor.length === 0)
+    {
+        errores+="El campo "+campo+" no puede quedar vacio ";
+        error = false;
+    }
+    else
+    {
+        if(!contieneEspacios(valor))
+        {
+            if(!expr_reg.test(valor))
+            {
+                errores+="\n El valor del campo "+campo+" es incorrecto\n debe contener al menos 3 caracteres y un máximo de 15 caracteres ";
+                if(campo==="contraseña")
+                {
+                    errores+="\nDebe contener al menos 1 letra minuscula,\n 1 letra mayuscula y un numero\n cuya longitud sea entre 6 y 20 caracteres";
+                }
+                error = false;
+            }
+        }
+        else
+        {
+            errores+="\nEl valor del campo "+campo+" tiene espacios";
+            error = false;
+        }
+    }
+    if(!error)
+    {
+        alert(errores);
+    }
+    return error;
+}
+/*Fin*/

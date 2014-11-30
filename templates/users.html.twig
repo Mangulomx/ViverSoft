@@ -12,7 +12,7 @@
        {%endif%}
         <form role="form" class="form-horizontal" onsubmit="return getcheckBoxValues();return false;" method="POST" action="{{ urlFor('userDelete') }}">
         {% if is_admin %} 
-            <a href="{{ urlFor('altausers') }}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Crear usuario</a>
+            <a href="{{ urlFor('altausers') }}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Alta usuario</a>
         {% endif %}
         <h2>Listado de usuarios</h2>
         {% if users %}

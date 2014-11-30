@@ -19,9 +19,9 @@ $app->map("/AltaEmpl", function() use($app, $authorized,$users)
         $apellido1 = $app->request->post('inputapellido1');
         $apellido2 = $app->request->post('inputapellido2');
         $email = $app->request->post('inputemail');
-        $puesto = $app->request->post('selectpuesto');
+        $puesto = (int)$app->request->post('selectpuesto');
         $telefono = $app->request->post('inputphone');
-        $usuario = $app->request->post('selectuser');
+        $usuario = (int)$app->request->post('selectuser');
         //Valido los posibles errores
         if(empty($nif))
         {
@@ -55,6 +55,17 @@ $app->map("/AltaEmpl", function() use($app, $authorized,$users)
         {
             $error[] = 'Debes seleccionar un puesto.';
         }
+        else
+        {
+            $es_jefe = ORM::for_table('empleado')->where('puesto',0)->find_one();
+            if($es_jefe)
+            {
+                if($puesto===0)
+                {
+                    $error[] = "Ya existe un jefe, no puedes crea otro";
+                }
+            }
+        }
         if($usuario!='-1')
         {
             $usuariotmp = ORM::for_table('empleado')->where('usuario_idusuario',$usuario)->find_one();
@@ -70,9 +81,12 @@ $app->map("/AltaEmpl", function() use($app, $authorized,$users)
             $AltaEmpleado->nombre = $nombre;
             $AltaEmpleado->apellido1 = $apellido1;
             $AltaEmpleado->apellido2 = $apellido2;
-            $AltaEmpleado->puesto = $puesto;
             $AltaEmpleado->email = $email;
             $AltaEmpleado->telefono = $telefono;
+            if($puesto!=='-1')
+            {
+                $AltaEmpleado->puesto = $puesto;
+            }
             if($usuario!='-1')
             {
                 $AltaEmpleado->usuario_idusuario = $usuario;

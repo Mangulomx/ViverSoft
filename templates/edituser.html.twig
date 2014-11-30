@@ -12,25 +12,25 @@
                 <div class="alert alert-info">{{error}}</div>
             {%endfor%}     
         {%endif%}
-        <form role='form' action="{{urlFor('updateuser',{'id': user['idusuario']})}}" method="POST" class="form-horizontal">
+        <form role='form' class="form-horizontal" onsubmit="return validar(this,fieldsUsers)" action="{{urlFor('updateuser',{'id': user['id']})}}" method="POST">
         <fieldset>
             <legend>Editar usuario</legend>
             <div class="form-group">
                 <label class="col-md-4 col-xs-4 control-label" for="inputuser">Nombre de usuario</label>
                 <div class="col-md-5 col-xs-5">
-                    <input id="inputuser" name="inputuser" value="{{user['username']}}" class="form-control" required type="text">
+                    <input id="inputuser" name="inputuser" value="{{user['username']}}" class="form-control" required type="text" />
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-4 col-xs-4 control-label" for="inputpassword">Contraseña</label>
                 <div class="col-md-5 col-xs-5">
-                    <input id="inputpassword" name="inputpassword" class="form-control" required type="password">
+                    <input id="inputpassword" name="inputpassword" class="form-control" required type="password" />
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-4 col-xs-4 control-label" for="inputemail">Email</label>
                     <div class="col-md-5 col-xs-5">
-                        <input id="inputemail" name="inputemail" value="{{user['email']}}" class="form-control" required type="email">
+                        <input id="inputemail" name="inputemail" value="{{user['email']}}" class="form-control" required type="email" />
                     </div>
             </div>
             <div class="form-group">
@@ -49,3 +49,38 @@
         </div>
     </div>
 {%endblock %}
+<script type="text/javascript">
+    window.onload = function()
+    {   
+        var fieldsUsers = ["","Nombre usuario","Contraseña","Email"];
+        var validar;
+        document.getElementById('inputuser').addEventListener('blur',function()
+        {
+           var regExp_user = /^[a-z0-9_-]{3,15}$/;
+           validar = validarCampo(this.value,regExp_user,'usuario');
+           if(validar)
+           {
+               bien(this);
+           }
+           else
+           {
+               mal(this);
+           }
+        });
+        
+        document.getElementById('inputpassword').addEventListener('blur',function()
+        {
+            var regExp_password=/(^(?=.*[a-z])(?=.*[A-Z])(?=.*\d){6,20}.+$/;
+            validar = validarCampo(this.value,regExp_password,'contraseña');
+            if(validar)
+            {
+                bien(this);
+            }
+            else
+            {
+                mal(this);
+            }
+            
+        });
+    }
+</script>

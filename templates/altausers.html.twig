@@ -14,25 +14,25 @@
             {% if flash['success'] %}
                 <div class='alert alert-success'>{{flash['success']}}</div>
             {% endif %}
-            <form action="{{urlFor('altausers')}}" method="POST" class="form-horizontal" role="form">
+            <form action="{{urlFor('altausers')}}" method="POST" onsubmit="return validar(this,fieldsUsers);" class="form-horizontal" role="form">
                 <fieldset>
                     <legend>Alta nuevo usuario</legend>
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="inputuser">Nombre de usuario</label>
                         <div class="col-md-5">
-                            <input id="inputuser" name="inputuser" placeholder="Nombre del usuario..." class="form-control input-md" required type="text">
+                            <input id="inputuser" name="inputuser" placeholder="Nombre del usuario..." class="form-control input-md" required type="text" />
                         </div>
                     </div>
                      <div class="form-group">
                         <label class="col-md-4 control-label" for="inputpassword">Contraseña</label>
                         <div class="col-md-5">
-                            <input id="inputpassword" name="inputpassword" placeholder="Introduce la contraseña..." class="form-control input-md" required type="password">
+                            <input id="inputpassword" name="inputpassword" placeholder="Introduce la contraseña..." class="form-control input-md" required type="password" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="inputemail">Email</label>
                         <div class="col-md-5">
-                            <input id="inputemail" name="inputemail" placeholder="Introduce el email..." class="form-control input-md" required type="email">
+                            <input id="inputemail" name="inputemail" placeholder="Introduce el email..." class="form-control input-md" required type="email" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -49,4 +49,40 @@
             </form>
         </div>
     </div>
+<script type="text/javascript">
+    var fieldsUsers = ["","Nombre usuario","Contraseña","Email"];
+    window.onload = function()
+    {
+        var validar;
+        document.getElementById('inputuser').addEventListener('blur',function()
+        {
+           var regExp_user = /^[a-z0-9_-]{3,15}$/;
+           validar = validarCampo(this.value,regExp_user,'usuario');
+           if(validar)
+           {
+               bien(this);
+           }
+           else
+           {
+               mal(this);
+           }
+        });
+        
+        document.getElementById('inputpassword').addEventListener('blur',function()
+        {
+            var regExp_password=/(^(?=.*[a-z])(?=.*[A-Z])(?=.*\d){6,20}.+$)/;
+            validar = validarCampo(this.value,regExp_password,'contraseña');
+            if(validar)
+            {
+                bien(this);
+            }
+            else
+            {
+                mal(this);
+            }
+            
+        });
+    }
+</script>
 {%endblock%}
+

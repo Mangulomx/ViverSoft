@@ -208,7 +208,7 @@ EOD;
             #tabla empleado
             
             $dbh->exec("CREATE TABLE IF NOT EXISTS `empleado` (
-           `nieempleado` BIGINT UNSIGNED NOT NULL,
+           `nieempleado` BIGINT NOT NULL,
            `nombre` VARCHAR(45) NOT NULL,
            `apellido1` VARCHAR(50) NOT NULL,
            `apellido2` VARCHAR(50) NOT NULL,

@@ -14,41 +14,41 @@
         {% endif %}     
     <fieldset>
             <legend>Editar empleado</legend>
-        <form role="form" action="{{ urlFor('updateEmployee', {'id': empleado['nieempleado']}) }}" class="form-horizontal" method="POST">
+        <form role="form" action="{{ urlFor('updateEmployee', {'id': empleado['nieempleado']}) }}" onsubmit="return validar(this,fieldsEmployee);" class="form-horizontal" method="POST">
             <div class="form-group">
                 <label class="col-md-4 col-xs-4 control-label" for="inputnie">Nie de empleado</label>
                 <div class="col-md-5 col-xs-5">
-                    <input id="inputnie" name="inputnie" value="{{empleado['nieempleado']}}" class="form-control" required type="text">
+                    <input id="inputnie" name="inputnie" value="{{empleado['nieempleado']}}" class="form-control" required type="text" />
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-4 col-xs-4 control-label" for="inputname">Nombre de empleado</label>
                 <div class="col-md-5 col-xs-5">
-                    <input id="inputname" name="inputname" value="{{empleado['nombre']}}" class="form-control" required type="text">
+                    <input id="inputname" name="inputname" value="{{empleado['nombre']}}" class="form-control" required type="text" />
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-4 col-xs-4 control-label" for="inputsurname">1er apellido</label>
                 <div class="col-md-5 col-xs-5">
-                    <input id="inputsurname" name="inputsurname" value="{{empleado['apellido1']}}" class="form-control" required type="text">
+                    <input id="inputsurname" name="inputsurname" value="{{empleado['apellido1']}}" class="form-control" required type="text" />
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-4 col-xs-4 control-label" for="inputsurname1">2do apellido</label>
                 <div class="col-md-5 col-xs-5">
-                    <input id="inputsurname1" name="inputsurname1" value="{{empleado['apellido2']}}" class="form-control" required type="text">
+                    <input id="inputsurname1" name="inputsurname1" value="{{empleado['apellido2']}}" class="form-control" required type="text" />
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-4 col-xs-4 control-label" for="inputemai1">Email</label>
                 <div class="col-md-5 col-xs-5">
-                    <input id="inputemail" name="inputemail" value="{{ empleado['emailemp'] }}" class="form-control" required type="email">
+                    <input id="inputemail" name="inputemail" value="{{ empleado['emailemp'] }}" class="form-control" required type="email" />
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-4 col-xs-4 control-label" for="inputphone">Telefono</label>
                 <div class="col-md-5 col-xs-5">
-                    <input id="inputphone" name="inputphone" value="{{ empleado['telefono'] }}" class="form-control" required type="text">
+                    <input id="inputphone" name="inputphone" value="{{ empleado['telefono'] }}" class="form-control" required type="text" />
                 </div>
             </div>
              <div class="form-group">
@@ -80,6 +80,18 @@
     </fieldset>
     </div>
     </div>
+<script type="text/javascript">
+var fieldsEmployee = ['','Nif Empleado','Nombre empleado','1er apellido','2do apellido','Email','Telefono','Puesto empleado','# Usuario'];
+window.onload = function()
+{
+    document.getElementById('inputphone').addEventListener('blur',function(){
+    valor=this.value; 
+    if(valor.length!==0)
+    {
+        comprobarTelefono(valor)?bien(this):mal(this);
+    }
+});
+</script>
 {% endblock %}
 
 

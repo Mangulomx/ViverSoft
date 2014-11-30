@@ -21,6 +21,7 @@
             <file>file:/C:/wamp/www/viver/routes/session.php</file>
             <file>file:/C:/wamp/www/viver/routes/users.php</file>
             <file>file:/C:/wamp/www/viver/templates/edituser.html.twig</file>
+            <file>file:/C:/wamp/www/viver/vendor/slim/slim/Slim/Middleware/MethodOverride.php</file>
             <file>file:/C:/wamp/www/viver/templates/base.html.twig</file>
             <file>file:/C:/wamp/www/viver/templates/createEmployee.html.twig</file>
             <file>file:/C:/wamp/www/viver/templates/frontpage.html.twig</file>

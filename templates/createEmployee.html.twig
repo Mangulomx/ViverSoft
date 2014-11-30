@@ -15,50 +15,49 @@
             {% endfor %}
         {% endif %}
         
-        <form action="{{ urlFor('AltaEmpleado') }}" method="POST" class="form-horizontal" role="form">
-          
+        <form class="form-horizontal" action="{{ urlFor('AltaEmpleado') }}" method="POST" onsubmit="return validar(this,fieldsEmployee);" role="form">
         <fieldset>
             <legend>Crear nuevo empleado</legend>
         <div class="form-group">
             <label class="col-md-4 control-label" for="inputnif">Nif empleado</label>  
             <div class="col-md-5">
-                <input id="inputnif" name="inputnif" placeholder="Nif del empleado..." class="form-control input-md" required="" type="text">
+                <input id="inputnif" name="inputnif" placeholder="Nif del empleado..." onblur="comprobarLetraDni(this.value)?bien(this):mal(this);" class="form-control input-md" required="" type="text" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-4 control-label" for="inputnombre">Nombre empleado</label>  
             <div class="col-md-6">
-                <input id="inputnombre" name="inputnombre" placeholder="Introduce nombre empleado" class="form-control input-md" required="" type="text">
+                <input id="inputnombre" name="inputnombre" placeholder="Introduce nombre empleado" class="form-control input-md" required="" type="text" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-4 control-label" for="inputapellido1">1er apellido</label>  
             <div class="col-md-5">
-               <input id="inputapellido1" name="inputapellido1" placeholder="Introduce primer apellido..." class="form-control input-md" required="" type="text">
+               <input id="inputapellido1" name="inputapellido1" placeholder="Introduce primer apellido..." class="form-control input-md" required="" type="text" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-4 control-label" for="inputapellido2">2do apellido</label>  
             <div class="col-md-5">
-                <input id="inputapellido2" name="inputapellido2" placeholder="Introduce segundo apellido..." class="form-control input-md" required="" type="text">
+                <input id="inputapellido2" name="inputapellido2" placeholder="Introduce segundo apellido..." class="form-control input-md" required="" type="text" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-4 control-label" for="inputemail">Email</label>  
             <div class="col-md-5">
-                <input id="inputemail" name="inputemail" placeholder="Introduce el email.." class="form-control input-md" type="email">
+                <input id="inputemail" name="inputemail" placeholder="Introduce el email.." class="form-control input-md" type="email" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-4 control-label" for="inputphone">Telefono</label>  
             <div class="col-md-5">
-                <input id="inputphone" name="inputphone" placeholder="Introduce el telefono..." class="form-control input-md" required="" type="text">
+                <input id="inputphone" name="inputphone" placeholder="Introduce el telefono..." class="form-control input-md" type="text" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-4 control-label" for="selectpuesto">Puesto</label>  
             <div class="col-md-5">
-               <select name="selectpuesto" id="selectpuesto">
+               <select name="selectpuesto" id="selectpuesto" onblur="seleccionPuesto(this.value)?bien(this):mal(this);">
                    <option value="-1">Seleccione un puesto</option>
                    <option value="0">Jefe</option>
                    <option value="1">Empleado</option>
@@ -87,4 +86,19 @@
 </form>    
     </div>
 </div>
+<script type="text/javascript">
+var fieldsEmployee = ['','Nif Empleado','Nombre empleado','1er apellido','2do apellido','Email','Telefono','Puesto empleado','# Usuario'];
+window.onload = function()
+{
+    document.getElementById('inputphone').addEventListener('blur',function(){
+    valor=this.value; 
+    if(valor.length!==0)
+    {
+        comprobarTelefono(valor)?bien(this):mal(this);
+    }
+});
+}
+</script>
 {% endblock %}
+
+

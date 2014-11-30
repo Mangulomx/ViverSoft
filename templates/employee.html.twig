@@ -31,16 +31,16 @@
             <tbody>
                 {% for empleado in empleados %}
                 <tr>
-                          <td class='text-center'>{{ empleado['nieempleado'] }}</td>
+                    <td class='text-center'><a data-id=" {{ empleado['nieempleado'] }}" onclick=" showEmployee(this,1)">{{ empleado['nieempleado'] }}</a></td>
                           <td class='text-center'>{{ empleado['nombre'] }}</td>
                           <td class='text-center'>{{ empleado['apellido1'] }}</td>
                           <td class='text-center'>{{ empleado['apellido2'] }}</td>
                           <td class='text-center'>{{ Puesto[empleado['puesto']] }}</td>
                           
-                          <td class='text-center'>{%if empleado['usuario_idusuario']!=NULL %}<a data-id="{{ empleado['nieempleado'] }}" onclick="showEmployee(this);">{{ empleado['usuario_idusuario'] }} </a> {% endif %}</td>
+                          <td class='text-center'>{%if empleado['usuario_idusuario']!=NULL %}<a data-id="{{ empleado['nieempleado'] }}" onclick="showEmployee(this,2);">{{ empleado['usuario_idusuario'] }} </a> {% endif %}</td>
                           <td>
-                              <a href='{{ urlFor('EditEmployee',{'id':empleado['nieempleado']}) }}' class='btn btn-primary' role='button'>Editar</a>
-                              <button type='submit' name='borrar' class='btn btn-danger' value='{{ empleado['nieempleado'] }}'>Borrar</button> 
+                              <a href='{{ urlFor('EditEmployee',{'id':empleado['nieempleado']}) }}' class='btn btn-primary' role='button'><i class="fa fa-pencil fa-fw"></i> Editar</a>
+                              <button type='submit' name='borrar' class='btn btn-danger' value='{{ empleado['nieempleado'] }}'><i class="fa fa-trash-o fa-fw"></i> Borrar</button> 
                           </td>
                 </tr>
                 {% endfor %}   

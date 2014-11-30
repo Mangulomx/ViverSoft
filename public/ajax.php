@@ -8,11 +8,14 @@ $identificador = $_GET['id'];
 switch($opcion)
 {
     case '1':
+    case '2':
     {
         $empleado = getEmpleado($identificador);
         $es_admin = ($empleado['admin']==1)?true:false;
-        $str = <<<EOD
-        <fieldset class='col-lg-12 col-sm-12'>
+        if($opcion ==='1')
+        {
+            $str = <<<EOD
+            <fieldset class='col-lg-12 col-sm-12'>
             <legend>Datos empleado</legend>
             <div class='row'>
                 <div class='col-md-4'>
@@ -48,10 +51,10 @@ switch($opcion)
                 </div>
             </div>
               <div class='row'>
-                    <div class='col-md-4'>
+                    <div class='col-md-6'>
                         <div class='form-group'>
                             <label for='email'>EMAIL</label>
-                            <input type='email' class='form-control' id='email' name='email' value='{$empleado['email']}'/>
+                            <input type='email' class='form-control' id='email' name='email' value='{$empleado['emailemp']}'/>
                         </div>
                     </div>
                     <div class='col-md-1'>
@@ -71,7 +74,12 @@ switch($opcion)
                         </div>
                 </div>
             </div>
-        </fieldset>
+            </fieldset>
+EOD;
+        }
+        else 
+        {
+            $str = <<<EOD
         <fieldset class='col lg-12 col sm-12'>
         <legend>Datos usuario</legend>
         <div class='row'>
@@ -89,7 +97,7 @@ switch($opcion)
             </div>
         </div>
          <div class='row'>
-            <div class='col-lg-4 col-md-4 col-sm-4'>
+            <div class='col-lg-6 col-md-6 col-sm-6'>
                <div class='form-group'>
                   <label for='username'>Email</label>
                   <input type='text' class='form-control' id='email' name='email' value='{$empleado['email']}' />
@@ -106,7 +114,11 @@ switch($opcion)
         </div>
                             
         </fieldset>
+            
 EOD;
+        }
+         
+        
         echo $str;
     }
 }

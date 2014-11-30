@@ -6,8 +6,8 @@ $app->get('/users', function() use ($app, $authorized,$users)
 })->name('userList');
 
 #Borrar usuarios
-/*
-$app->post('/delete', function() use($app)
+
+$app->post('/deleteUser', function() use($app)
 {
     if(isset($_POST['eliminar']))
     {
@@ -30,7 +30,7 @@ $app->post('/delete', function() use($app)
         $app->redirect($app->urlFor('userList'));
     }
 })->name("userDelete");
- */
+ 
 
 #Alta de usuarios
 $app->map('/altausers',function() use($app)
@@ -67,7 +67,7 @@ $app->map('/altausers',function() use($app)
         #Validación del email
         if(!empty($email))
         {
-            if(!filter_var($email, FILTER_VALIDATE_EMAL))
+            if(!filter_var($email, FILTER_VALIDATE_EMAIL))
             {
                 $error[] = "El email nos es valido";
             }
@@ -122,7 +122,7 @@ $app->post('/users/:id',function($id) use($app)
         else
         {
             $user = ORM::for_table('usuario')->where('username',$username)->find_one();
-            if(user)
+            if($user)
             {
                 $error[] = "El nombre de usuario ya esta en uso";
             }
