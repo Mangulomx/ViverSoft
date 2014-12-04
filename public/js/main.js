@@ -4,6 +4,50 @@
         modalContent = modalBoxObject.getElementsByClassName('modal-body')[0],
         modalFooter = modalBoxObject.getElementsByClassName('modal-footer')[0];
 
+$("document").ready(function(){
+   $("#searchproducts").click(function(event){
+      //Recojo el valor del input
+      var value=$("#inputproducts").val();
+      //elimino el comportamiento por defecto del enlace
+      event.preventDefault();
+      //Aquí pongo el codigo para llamar a los página de productos en ajax
+      $.ajax({
+      type:"POST",
+      url:"products_ajax.php",
+      async:true,
+      data:'parametro1='+value,
+      datatype:'html',
+      success: function(data)
+      {
+          document.getElementById('editor-panel').innerHTML = data;
+      },
+      error: function(jqXHR, exception)
+      {
+        if(jqXHR.status === 500)
+        {
+            alert('Error interno:'+jqXHR.responseText);
+        }
+        else if(jqXHR.status=== 404)
+        {
+            alert('Pagina no encontrada[404]');
+        }
+        else if(exception === 'timeout')
+        {
+            alert("Error time out");
+        }
+        else if(exception === 'abort')
+        {
+            alert('Respuesta ajax abortada');
+        }
+        else
+        {
+            alert("Error no detectado "+jqXHR.responseText);
+        }
+      }
+      });
+   }); 
+});
+
 function getcheckBoxValues()
 {
    

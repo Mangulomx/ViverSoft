@@ -77,7 +77,7 @@ $app->map("/AltaEmpl", function() use($app, $authorized,$users)
         if(count($error)==0)
         {
             $AltaEmpleado = ORM::for_table('empleado')->create();
-            $AltaEmpleado->nieempleado = $nif;
+            $AltaEmpleado->nieempleado =$nif;
             $AltaEmpleado->nombre = $nombre;
             $AltaEmpleado->apellido1 = $apellido1;
             $AltaEmpleado->apellido2 = $apellido2;
@@ -128,21 +128,24 @@ $app->post('/editEmp/:id', function($id) use($app)
         $email = $app->request()->post('inputemail');
         $puesto = (int)$app->request()->post('selectpuesto');
         $telefono = $app->request()->post('inputphone');
-        $usuario = $app->request()->post('selectusuario');
+        $usuario =(int)$app->request()->post('selectusuario');
         #Valido si hay errores
         if(empty($nie))
         {
             $error[] = "El nie no puede estar vacio";
         }
+        
         else
         {
             $empleado = ORM::for_table('empleado')->
+            where_not_equal('id',$id)->
             where('nieempleado',$nie)->find_one();
             if($empleado)
             {
-                $error[] = "Ya existe un empleado con este nie";
+                $error[] = "Ya existe un empleado con este nif";
             }
         }
+        
         if(empty($nombre))
         {
             $error[] = "El nombre del empleado no puede estar vacio";
@@ -176,7 +179,9 @@ $app->post('/editEmp/:id', function($id) use($app)
         }
         else
         {
-            $es_jefe = ORM::for_table('empleado')->where('puesto',0)->find_one();
+            $es_jefe = ORM::for_table('empleado')->where('puesto',0)->
+            where_not_equal('id',$id)->
+            find_one();
             if($es_jefe)
             {
                 if($puesto===0)
@@ -189,24 +194,22 @@ $app->post('/editEmp/:id', function($id) use($app)
       
         if(count($error)==0)
         {
-            $empleado = ORM::for_table('empleado')->create();
+           
+            $empleado = ORM::for_table('empleado')->find_one($id);
             $empleado->nieempleado = $nie;
             $empleado->nombre = $nombre;
             $empleado->apellido1 = $apellido1;
             $empleado->apellido2 = $apellido2;
             $empleado->email = $email;
+            $empleado->puesto = $puesto;   
             if(!empty($telefono))
             {
                 $empleado->telefono = $telefono;
             }
-            if($usuario!=='')
+            if($usuario!==-1)
             {
-                $empleado->usuario_idusuario = (int)$usuario;
-            }
-            if($puesto!==-1)
-            {
-                $empleado->puesto = $puesto;    
-            }
+                $empleado->usuario_idusuario = $usuario;
+            }  
             $empleado->save();
             $app->redirect($app->urlFor('employeeList'));
         }
@@ -240,6 +243,7 @@ function listadoEmpleados()
     return ORM::for_table('empleado')->
     table_alias('emp')->
     select('emp.*')->
+    select('emp.id','idempleado')->
     select('u.*')->
     left_outer_join('usuario',array('emp.usuario_idusuario', '=', 'u.id'),'u')->find_array();
 }
@@ -250,9 +254,10 @@ function getEmpleado($identificador)
     return ORM::for_table('empleado')->
     table_alias('emp')->
     select('emp.*')->
+    select('emp.id','idempleado')->
     select('emp.email','emailemp')->
     select('u.*')->
-    where('emp.nieempleado',$identificador)->
+    where('emp.id',$identificador)->
     left_outer_join('usuario',array('emp.usuario_idusuario', '=', 'u.id'),'u')->order_by_asc('emp.nieempleado')->find_one();
 }
 

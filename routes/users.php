@@ -112,8 +112,8 @@ $app->post('/users/:id',function($id) use($app)
         $username = $app->request()->post('inputuser'); 
         $email = $app->request()->post('inputemail');
         $password = $app->request()->post('inputpassword');
-        $esadmin = $app->request()->post('es_admin',0);
-        
+        $esadmin = (int)$app->request()->post('es_admin',0);
+ 
         //Validación de los datos
         if(empty($username))
         {
@@ -121,7 +121,8 @@ $app->post('/users/:id',function($id) use($app)
         }
         else
         {
-            $user = ORM::for_table('usuario')->where('username',$username)->find_one();
+            $user = ORM::for_table('usuario')->where_not_equal('id',$id)->
+            where('username',$username)->find_one();
             if($user)
             {
                 $error[] = "El nombre de usuario ya esta en uso";
@@ -142,7 +143,7 @@ $app->post('/users/:id',function($id) use($app)
         //Si no hay errores procedo a crear el usuario
         if(count($error)==0)
         {
-            $user = ORM::for_table('usuario')->create();
+            $user = ORM::for_table('usuario')->find_one($id);
             $user->username = $username;
             if(!empty($password))
             {
@@ -156,7 +157,7 @@ $app->post('/users/:id',function($id) use($app)
         else
         {
             $app->flash('error',$error);
-            $app->redirect($app->urlFor('edituser', array('id' => $user['id'])));
+            $app->redirect($app->urlFor('edituser', array('id' => $id)));
         }
     }
     

@@ -50,4 +50,6 @@ require('../routes/frontpage.php');
 require('../routes/users.php');
 #Gestion de empleados de la aplicación
 require('../routes/employees.php');
+#Gestión de categorias o gamas de la aplicación
+require('../routes/gama.php');
 $app->run();

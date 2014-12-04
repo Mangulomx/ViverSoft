@@ -123,13 +123,13 @@ EOD;
     }
 }
 //Obtengo los datos de los empleados según el nie del empleado que le he pasado
-function getEmpleado($nie)
+function getEmpleado($id)
 {
     return ORM::for_table('empleado')->
         table_alias('emp')->
         select('emp.*')->
         select('emp.email','emailemp')->
         select('u.*')->
-        where('emp.nieempleado',$nie)->
-        left_outer_join('usuario',array('emp.usuario_idusuario', '=', 'u.id'),'u')->order_by_asc('emp.nieempleado')->find_one();
+        where('emp.id',$id)->
+        left_outer_join('usuario',array('emp.usuario_idusuario', '=', 'u.id'),'u')->order_by_asc('emp.id')->find_one();
 }

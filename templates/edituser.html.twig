@@ -36,7 +36,7 @@
             <div class="form-group">
                 <label class="col-md-4 col-xs-4 control-label" for="es_admin">¿Es administrador?</label>
                 <div class="col-md-5 col-xs-5">
-                    <input type="checkbox" name="es_admin" id="es_admin" {% if(user['admin']==1) %} checked="true" {%endif%} />
+                    <input type="checkbox" name="es_admin" id="es_admin" value="1" {%if user['admin']==1 %} checked {% endif %} />
                 </div>
             </div>
             <div class='form-group text-center'>   
@@ -48,7 +48,6 @@
         </form>
         </div>
     </div>
-{%endblock %}
 <script type="text/javascript">
     window.onload = function()
     {   
@@ -84,3 +83,4 @@
         });
     }
 </script>
+{%endblock %}

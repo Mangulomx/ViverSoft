@@ -52,10 +52,12 @@
                     <div class="dropdown menu col-lg-9 col-md-9 col-xs-9">
                     <ul class="nav nav-pills nav-stacked">
                         <li><a tabindex="-1" href="{{ urlFor('employeeList') }}">GESTION DE EMPLEADOS</a></li>
+                        {% if authorized %}
                         <li><a tabindex="-1" href="{{ urlFor('userList')}}">GESTION DE USUARIOS</a></li>
-                        <li><a class="dropdown-toggle" data-toggle="dropdown" href="/ejemplar">GESTION DE EJEMPLARES</a>
+                        {% endif %}
+                        <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">GESTION DE PEDIDOS</a>
                             <ul class="dropdown-menu">
-                                <li><a href=#>Listado de Ejemplares</a></li>
+                                <li><a href="{{ urlFor('Productsearch')}}">Realizar pedido</a></li>
                                 <li><a href=#>Entrega lote libros a un alumno</a></li>
                                 <li><a href=#>Alta de Ejemplares</a></li>
                             </ul>
