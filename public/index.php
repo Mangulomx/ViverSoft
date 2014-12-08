@@ -52,4 +52,8 @@ require('../routes/users.php');
 require('../routes/employees.php');
 #Gestión de categorias o gamas de la aplicación
 require('../routes/gama.php');
+#Gestión de pedidos
+require('../routes/orders.php');
+#Gestión de linea de pedidos
+require('../routes/orderline.php');
 $app->run();

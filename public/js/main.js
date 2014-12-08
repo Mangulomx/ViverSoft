@@ -3,23 +3,120 @@
         modaltitle = modalBoxObject.getElementsByClassName('modal-title')[0],
         modalContent = modalBoxObject.getElementsByClassName('modal-body')[0],
         modalFooter = modalBoxObject.getElementsByClassName('modal-footer')[0];
+var debug = true;
 
 $("document").ready(function(){
-   $("#searchproducts").click(function(event){
-      //Recojo el valor del input
-      var value=$("#inputproducts").val();
+   $("select#selectgama").change(function()
+   {
+       $("#inputproduct").parent().parent().removeClass("hidden");
+       $("button[type=submit]").parent().removeClass("hidden");
+       $("button[type=submit]").attr("disabled");
+       
+   });
+   $("#box-modal").on("shown",function(event)
+   {
+       $("#selectproductname").change(function(){
+       var valueProduct = $(this).val();
+       $("#editor-panel").removeClass("hidden");
+       event.preventDefault();
+       $.ajax({
+          type:'GET',
+          url:'/ajax/products_ajax.php?idProducto='+valueProduct+'&opcion=2',
+          async:true,
+          datatype:'text',
+          success: function(data)
+          { 
+              $("#editor-panel").load("/ajax/order.html", function(responseText, statusTxt, xhr)
+              {
+                  if(statusTxt=="success")
+                  {
+                      var inputs = document.getElementById('editor-panel').getElementsByTagName('input');
+                      mostrarDatos(inputs,data);
+                  }
+                  if(statusTxt=="error")
+                  {
+                      alert("Error:"+xhr.status+":"+xhr.statusText);
+                  }
+              });
+              $("#editor-actions").removeClass("hidden");
+          },
+          error: function(jqXHR, exception)
+          {
+              if(jqXHR.status === 500)
+              {
+                alert('Error interno:'+jqXHR.responseText);
+              }
+              else if(jqXHR.status=== 404)
+              {
+                alert('Pagina no encontrada[404]');
+              }
+              else if(exception === 'timeout')
+              {
+                alert("Error time out");
+              }
+             else if(exception === 'abort')
+             {
+               alert('Respuesta ajax abortada');
+             }   
+             else
+            {
+                alert("Error no detectado "+jqXHR.responseText);
+            }
+          }
+       });
+    });
+    
+    function mostrarDatos(inputs, data)
+    {
+        var descatalogado = data.substring(data.lastIndexOf('*')+1,data.lastIndexOf('@'));
+        var identificador = data.substring(0, data.indexOf("#"));
+        identificador = identificador.replace(/\s/g,'');
+        var datos = data.substring(0,data.lastIndexOf("*"));
+        inputdata = datos.substring(datos.indexOf('#')+1);
+        inputdata = inputdata.split('*');
+        inputs[0].value = inputdata[0];
+        $("#descripciontext").val(inputdata[2]);
+        inputs[2].value = inputdata[1];
+        var checked = (descatalogado ==='1' )?true:false;
+        $("#inputdescatalogado").prop("checked",checked);
+        $("#editor-actions").removeClass("hidden");
+        $("#inputidproducto").val(identificador);
+    }
+      
+});
+ 
+   $("button#order-search").click(function(event){
+      var str = $("#es_valid").val();
+      var validacion = (str === "true") ? true : false;
+      if(validacion)
+      {
+       //Recojo el valor del input
+      var value=$("#inputproduct").val();
+      //Recojo el valor del select
+      var value1 = $('#selectgama').val();
       //elimino el comportamiento por defecto del enlace
       event.preventDefault();
+      //Quito la clase oculta para mostrar la ventana modal
+      $("#editor-header").removeClass('hidden');
+      modalBox.modal('show'); //Muestro la ventana modal
+      modaltitle.innerHTML = "Visualizar productos";
+      //modalFooter.innerHTML = "<button type='button' class='btn btn-default' data-dismiss='modal'>Cerrar</button>";
       //Aquí pongo el codigo para llamar a los página de productos en ajax
       $.ajax({
       type:"POST",
-      url:"products_ajax.php",
+      url:"/ajax/products_ajax.php",
+      data: "parametro1="+value+"&parametro2="+value1+"&opcion=1",
       async:true,
-      data:'parametro1='+value,
       datatype:'html',
       success: function(data)
       {
-          document.getElementById('editor-panel').innerHTML = data;
+          if(data.indexOf('alert')!==-1)
+          {
+              $("#editor-header").innerHTML='';
+              $("#editor-panel").addClass('hidden');
+              $("#editor-footer").addClass('hidden');
+          }
+          document.getElementById('editor-header').innerHTML = data;
       },
       error: function(jqXHR, exception)
       {
@@ -38,13 +135,14 @@ $("document").ready(function(){
         else if(exception === 'abort')
         {
             alert('Respuesta ajax abortada');
-        }
+        }   
         else
         {
             alert("Error no detectado "+jqXHR.responseText);
         }
       }
       });
+      }
    }); 
 });
 
@@ -119,10 +217,6 @@ function validar(form,fieldsForm)
             }
         } 
     }
-    if(!enviar)
-    {
-        alert(errores);
-    }
     return enviar;
 }
 function seleccionPuesto(valor)
@@ -166,7 +260,16 @@ function comprobarLetraDni(parametro)
     
     return correcto;
 }
-
+function mostrarErrores(arrayerror)
+{
+    var uniqueserror = [];
+    $.each(arrayerror, function(i,el)
+    {
+        if($.inArray(el, uniqueserror) === -1)
+           uniqueserror.push(el);
+        
+    });
+}
 function comprobarTelefono(telefono)
 {
    
@@ -200,12 +303,10 @@ function contieneEspacios(str)
 
 function validarCampo(valor, expr_reg, campo)
 {
-    var errores="";
     error = true;
     //Compruebo que el valor del campo no este vacio
     if(valor.length === 0)
     {
-        errores+="El campo "+campo+" no puede quedar vacio ";
         error = false;
     }
     else
@@ -214,24 +315,16 @@ function validarCampo(valor, expr_reg, campo)
         {
             if(!expr_reg.test(valor))
             {
-                errores+="\n El valor del campo "+campo+" es incorrecto\n debe contener al menos 3 caracteres y un máximo de 15 caracteres ";
-                if(campo==="contraseña")
-                {
-                    errores+="\nDebe contener al menos 1 letra minuscula,\n 1 letra mayuscula y un numero\n cuya longitud sea entre 6 y 20 caracteres";
-                }
                 error = false;
             }
         }
         else
         {
-            errores+="\nEl valor del campo "+campo+" tiene espacios";
             error = false;
         }
-    }
-    if(!error)
-    {
-        alert(errores);
     }
     return error;
 }
 /*Fin*/
+
+

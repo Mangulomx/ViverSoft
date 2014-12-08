@@ -7,7 +7,6 @@ $app->get("/empleado", function() use($app, $authorized)
     $app->render("employee.html.twig", array('empleados' => $empleados, 'is_admin' => $authorized ));
 })->name('employeeList');
 
-
 #Alta de empleados
 $app->map("/AltaEmpl", function() use($app, $authorized,$users)
 {

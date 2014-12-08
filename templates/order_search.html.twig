@@ -1,0 +1,104 @@
+{% extends "base.html.twig" %}
+{% block title %} GESTIÓN DE PEDIDOS {% endblock %}
+{% block content %}
+    <div class='panel panel-default'>
+        <div class='panel panel-heading'>
+            <h3>Gestión de pedidos</h3>
+        </div>
+        <div class='panel-body'>
+            <div id="errores" class="alert alert-info hidden"></div>
+            <h5 class='style-blue'>Realizar pedido</h5>
+            <form role='form' class='form-horizontal' onsubmit='return validar(this, orderSearch);'>
+                    <div class='form-group'>
+                        <label for='selectgama' class='col-md-4 col-xs-4 control-label'>Gama:</label>
+                        <div class='col-lg-4 col-md-4 col-xs-4'>
+                            <select name='selectgama' id='selectgama'>
+                                <option value='-1'>Seleccione gama</option>
+                                {%for gama in gamas %}
+                                    <option value='{{ gama.id }}'>{{ gama.nombre }} </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class='form-group hidden'>
+                        <label for='inputproduct' class='col-lg-4 col-md-4 col-xs-4 control-label'>Buscar producto:</label>
+                        <div class='col-lg-4 col-md-4 col-xs-4'>
+                            <input type='text' name='inputproduct' id='inputproduct' required placeholder='Introduce 3 primeros caracteres ...' />
+                            <input type='hidden' name='es_valid' id='es_valid' />
+                        </div>
+                    </div>
+                    <div class='form-group text-center hidden'>
+                        <button type='submit' id='order-search' name='order-search' disabled class='btn btn-primary'>Buscar</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+    <script type='text/javascript'>
+        window.onload = function()
+        {
+            errores = [];
+            errores[0] = "";
+            str="";
+           
+            document.getElementById('inputproduct').addEventListener('blur',function()
+            {
+                var regExp_product = /^\D{3,}$/;
+                validar = validarCampo(this.value, regExp_product, 'producto');
+                document.forms[0].es_valid.value = validar;
+                if(validar)
+                {
+                 
+                    $('button[type=submit]').removeAttr('disabled');
+                    $('#errores').addClass('hidden');
+                    bien(this);
+                }
+                else
+                {
+                    str = "El campo input producto debe contener al menos 3 digitos";
+                    visualizarErrores('disabled',str);
+                    mal(this);
+                }
+           
+            });
+            document.getElementById('selectgama').addEventListener('blur',function()
+            {
+                var valor = this.value;
+                if(valor === '-1')
+                {
+                    str1 = "Tienes que seleccionar una categoria";
+                    visualizarErrores('disabled',str1);
+                    mal(this);
+                }
+                else
+                {
+                    $('button[type=submit]').removeAttr('disabled');
+                    $('#errores').addClass('hidden');
+                    bien(this);
+                 
+                }
+                    
+            });
+        };
+        function visualizarErrores(atr, cadena)
+        {
+             $('button[type=submit]').attr("disabled",atr);
+             str = cadena;
+             errores.push(str);
+             mostrarErrores(errores);
+        }
+    </script>
+{% endblock %}
+{% block modal_body %}
+ <div class="hidden" id="editor-header">
+ </div>
+ <div class="hidden" id="editor-panel">
+ </div>
+{% endblock %}
+{% block modal_footer %}
+    <div id="editor-actions" class="form-group text-center hidden">
+        <div class="col-md-8">
+            <button type="submit" id="add-cart" name="add-cart" class="btn-default btn-success">Añadir al carrito</button>
+            <a id='view-cart' name='view-cart'>Ver carrito</a>
+        </div>
+    </div>
+{% endblock %}

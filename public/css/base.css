@@ -99,3 +99,12 @@ header, footer, #wrapper
     background-position:center;
     height:100px;
 }
+
+/*Estilos de colores parrafos */
+.style-blue
+{
+    font-weight:bolder;
+    color:#00f;
+}
+
+/* FIN */
