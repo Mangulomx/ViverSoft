@@ -1,0 +1,28 @@
+        {% if proveedores %}
+        <h4>Listado de proveedores</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center">Id</th>
+                    <th class="text-center">Nieproveedor</th>
+                    <th class="text-center">Nombre de proveedor</th>
+                    <th class="text-center">Telefono</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for proveedor in proveedores %}
+                <tr>
+                    <td class="text-center">{{ proveedor.id }}</td>
+                    <td class="text-center">{{ proveedor.nieproveedor }}</td>
+                    <td class="text-center">{{ proveedor.nombreproveedor }}</td>
+                    <td class="text-center">{{ proveedor.telefono }}</td>
+                    <td class="text-center"><a href="{{ urlFor('searchProduct',{'id':proveedor.id}) }}" class="btn btn-default" role="button"><i class="fa fa-arrow-right"></i> Elegir</a>
+                </tr>
+                {% endfor %}   
+            </tbody>
+        </table>
+      {% else %}
+          <div class="alert alert-info">No hay proveedores para mostrar</div>
+      {% endif %}
+ 

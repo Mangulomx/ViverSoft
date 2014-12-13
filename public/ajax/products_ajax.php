@@ -21,7 +21,15 @@ switch($opcion)
         if(isset($_GET['idProducto']))
         {
             $producto = getOrdersProduct1($_GET['idProducto']);
-            echo ltrim($producto['id']).'#'.$producto['nombre_producto'].'*'.$producto['precioVenta'].'*'.$producto['descripcion'].'*'.$producto['descatalogado'].'@'.$producto['cantidad_stock'];
-            //echo $orderHTML = trim(preg_replace('/\s+/',' ', $orderHTML));
+            //Compruebo si el tipo es string, ya que me devolvera una cadena con los errores del formulario
+            if(gettype($producto)==="string")
+            {
+                echo $producto;
+            }
+
+            {
+               $orderHTML = ltrim($producto['id']).'#'.$producto['nombre_producto'].'*'.$producto['precioVenta'].'*'.$producto['descripcion'].'*'.$producto['descatalogado'].'@'.$producto['cantidad_stock'];
+               echo $orderHTML = trim(preg_replace('/\s+/',' ', $orderHTML));
+            }
         }
 }

@@ -17,7 +17,7 @@ function getOrdersProduct($valueproduct, $valuegama)
         $productos = GetProducts($valueproduct,$valuegama);
         if(!$productos)
         {
-            $strHTML = "<div class='alert alert-info'>No se encuentran productos con el valor de busqueda {$valueproduct} </div>";
+            $errores[] = "No se encuentran productos con el valor de busqueda {$valueproduct}";
         }
         else
         {
@@ -36,6 +36,37 @@ function getOrdersProduct($valueproduct, $valuegama)
     
 }
 function getOrdersProduct1($identificador)
+{
+    $strHTML='';
+    $errores = array();
+    if($identificador ==='-1')
+    {
+        $errores[] = "Tienes que seleccinar un producto";
+    }
+    if(count($errores)==0)
+    {
+        $productos = GetProducts1($identificador);
+        if(!$productos)
+        {
+            $errores[]="No hay productos con este identificador {$identificador}";
+        }
+        else 
+        {
+            $strHTML = $productos;
+        }
+    }
+    else 
+    {
+        foreach($errores as $error)
+        {
+            $strHTML.="<div class='alert alert-info'>{$error}</div>";
+        }
+    }
+    
+    return $strHTML;
+    
+}
+function GetProducts1($identificador)
 {
     return ORM::for_table('producto')->
     where('id',$identificador)->find_one()->as_array();

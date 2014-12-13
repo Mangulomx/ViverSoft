@@ -13,10 +13,85 @@ $("document").ready(function(){
        $("button[type=submit]").attr("disabled");
        
    });
+
+ $("#search-provider").bind("focus keypress", function(event){
+
+        var valuesearch =$(this).val(); //Obtengo el valor de mi campo de ajax
+        if (valuesearch.length > 2)
+        {
+            $.ajax({
+                type:'GET',
+                url:'/orders/provider/'+valuesearch,
+                success: function(data)
+                {
+                    $("#proveedorindex").html(data);
+              
+                },
+                error: function(jqXHR, exception)
+                {
+                    if(jqXHR.status === 500)
+                    {
+                        alert('Error interno:'+jqXHR.responseText);
+                    }
+                    else if(jqXHR.status=== 404)
+                    {
+                        alert('Pagina no encontrada[404]');
+                    }
+                    else if(exception === 'timeout')
+                    {
+                        alert("Error time out");
+                    }
+                    else if(exception === 'abort')
+                    {
+                        alert('Respuesta ajax abortada');
+                    }   
+                    else
+                    {
+                        alert("Error no detectado "+jqXHR.responseText);
+                    }
+                }});
+         }
+ });  
    $("#box-modal").on("shown",function(event)
    {
+       $("#add-cart").click(function(e)
+       {
+           alert("hola");
+           e.preventDefault();
+           if($("#selectproductname").val()!=='-1')
+           {
+               var oculto = $("#add-cart").hasClass('hidden');
+               var descatalogado = $("#inputdescatalogado").is(":checked");
+               if(!descatalogado)
+               {
+                   if(oculto)
+                   {
+                        $("#add-cart").removeClass('hidden');
+                   }
+                    var valueidproduct = $("#inputidproducto").val();
+                    $.ajax({
+                        type:'GET',
+                        url: '/lineorder/addCart/'+valueidproduct
+                    });
+                }
+                else
+                {
+                    if(!oculto)
+                    {
+                        $("#add-cart").addClass("hidden");
+                    }
+           
+                }
+            }
+       });
        $("#selectproductname").change(function(){
        var valueProduct = $(this).val();
+       if(valueProduct ==='-1')
+       {
+           alert("Tienes que seleccionar un producto");
+       }
+       else
+       {
        $("#editor-panel").removeClass("hidden");
        event.preventDefault();
        $.ajax({
@@ -31,6 +106,7 @@ $("document").ready(function(){
                   if(statusTxt=="success")
                   {
                       var inputs = document.getElementById('editor-panel').getElementsByTagName('input');
+                      console.log("datos"+data);
                       mostrarDatos(inputs,data);
                   }
                   if(statusTxt=="error")
@@ -64,6 +140,7 @@ $("document").ready(function(){
             }
           }
        });
+       }
     });
     
     function mostrarDatos(inputs, data)
@@ -76,7 +153,6 @@ $("document").ready(function(){
         inputdata = inputdata.split('*');
         inputs[0].value = inputdata[0];
         $("#descripciontext").val(inputdata[2]);
-        inputs[2].value = inputdata[1];
         var checked = (descatalogado ==='1' )?true:false;
         $("#inputdescatalogado").prop("checked",checked);
         $("#editor-actions").removeClass("hidden");
@@ -114,7 +190,7 @@ $("document").ready(function(){
           {
               $("#editor-header").innerHTML='';
               $("#editor-panel").addClass('hidden');
-              $("#editor-footer").addClass('hidden');
+              $("#editor-actions").addClass('hidden');
           }
           document.getElementById('editor-header').innerHTML = data;
       },
@@ -216,6 +292,10 @@ function validar(form,fieldsForm)
                 enviar = false;
             }
         } 
+    }
+    if(!enviar)
+    {
+        alert(errores);
     }
     return enviar;
 }

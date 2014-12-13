@@ -106,5 +106,9 @@ header, footer, #wrapper
     font-weight:bolder;
     color:#00f;
 }
-
+.style-strong1
+{
+    font-weight:bolder;
+    text-transform: uppercase;
+}
 /* FIN */

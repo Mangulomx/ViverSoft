@@ -1,13 +1,17 @@
 {% extends "base.html.twig" %}
 {% block title %} GESTIÓN DE PEDIDOS {% endblock %}
 {% block content %}
-    <div class='panel panel-default'>
-        <div class='panel panel-heading'>
-            <h3>Gestión de pedidos</h3>
-        </div>
-        <div class='panel-body'>
+    <div class="col-lg-12">
+        <div class='panel panel-default'>
+            <div class='panel panel-heading'>
+                <h3><i class="fa fa-shopping-cart"></i> Carrito</h3>
+            </div>
+            <div class="panel-body">
+                <h4> # Proveedor: {{ proveedores['id'] }} </h4>
+                <h4> Nombre proveedor: {{ proveedores['nombreproveedor'] }} </h4>
+                <div class="row">
+                </div>
             <div id="errores" class="alert alert-info hidden"></div>
-            <h5 class='style-blue'>Realizar pedido</h5>
             <form role='form' class='form-horizontal' onsubmit='return validar(this, orderSearch);'>
                     <div class='form-group'>
                         <label for='selectgama' class='col-md-4 col-xs-4 control-label'>Gama:</label>
@@ -31,7 +35,8 @@
                         <button type='submit' id='order-search' name='order-search' disabled class='btn btn-primary'>Buscar</button>
                     </div>
             </form>
-        </div>
+            </div>
+        </div>  
     </div>
     <script type='text/javascript'>
         window.onload = function()

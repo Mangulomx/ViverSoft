@@ -1,0 +1,55 @@
+{% extends "base.html.twig" %}
+{% block title %} Gestión de pedidos {% endblock %}
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="icon-shopping-cart"></i> Carrito de compra</h3>
+        </div>
+    </div>
+   <div class="panel-body">
+       {% if flash['info'] %}
+           <div class="alert alert-danger">{{flash['info']}}</div>
+       {%endif%}
+        <form role="form" class="form-horizontal">
+        <h2>Deseo que envien:</h2>
+        {% if productos %}
+        <table class="table table-striped table-reponsive table-bordered">
+            <thead>
+                <tr>
+                    <th># Producto</th>
+                    <th>Nombre producto</th>
+                    <th>Descripcion</th>
+                    <th>Precio unitario</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% set total = 0 %}
+                {% for i,producto in productos %}
+                {% set cantidad = producto.precioVenta * cantidad[i] %}
+                {% set total+=cantidad %}
+                <tr>
+                    <td class="text-center">{{ producto.id }}</td>
+                    <td class="text-center">{{ producto.nombre_producto }}</td>
+                    <td class="text-center">{{ producto.descripcion }}</td>
+                    <td class="text-center">{{ producto.precioVenta }}</td>
+                    <td class="text-center"><input type="number" name="inputcantidad" id="inputcantidad" min="1" max="999" value="{{ cantidad[i] }}" /></td>
+                    <td class="text-center">{{ cantidad }}</td>
+                </tr>
+                {% endfor %}   
+            </tbody>
+            <tfooter>
+                <tr colspan="4">
+                    <td class="style-strong1">Total:</td>
+                    <td>{{ total }}<span>&euro;</span></td>
+                </tr>
+            </tfooter>
+        </table>
+      {% else %}
+          <div class="alert alert-info">No hay productos en el carrito que mostrar</div>
+      {% endif %}
+      </form>
+    </div>
+{% endblock %}
+
