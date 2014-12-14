@@ -4,7 +4,7 @@
         modalContent = modalBoxObject.getElementsByClassName('modal-body')[0],
         modalFooter = modalBoxObject.getElementsByClassName('modal-footer')[0];
 var debug = true;
-
+var dataAjax='';
 $("document").ready(function(){
    $("select#selectgama").change(function()
    {
@@ -52,69 +52,76 @@ $("document").ready(function(){
                 }});
          }
  });  
+   
    $("#box-modal").on("shown",function(event)
    {
-       $("#add-cart").click(function(e)
+       $(this).find('.modal-body').css({
+              width:'auto', 
+              height:'auto',
+              'max-height':'100%'
+       });
+       $("button#add-cart").click(function()
        {
-           alert("hola");
-           e.preventDefault();
+            
            if($("#selectproductname").val()!=='-1')
            {
-               var oculto = $("#add-cart").hasClass('hidden');
-               var descatalogado = $("#inputdescatalogado").is(":checked");
-               if(!descatalogado)
-               {
-                   if(oculto)
-                   {
-                        $("#add-cart").removeClass('hidden');
-                   }
-                    var valueidproduct = $("#inputidproducto").val();
-                    $.ajax({
-                        type:'GET',
-                        url: '/lineorder/addCart/'+valueidproduct
+                var valueidproduct = $("#inputidproducto").val();
+                var request = $.ajax({
+                    type:'POST',
+                    url: '/lineorder/addCart/'+valueidproduct,
+                    data: $("#form-product").serialize(),
+                    datatype:'html'
                     });
-                }
-                else
-                {
-                    if(!oculto)
-                    {
-                        $("#add-cart").addClass("hidden");
-                    }
-           
-                }
+                request.done(function(html) {
+                    $("#editor-cart").html( html);
+                });
+ 
+                request.fail(function( jqXHR, textStatus ) {
+                    alert( "Request failed: " + textStatus );
+                });
             }
        });
+       
+       
        $("#selectproductname").change(function(){
        var valueProduct = $(this).val();
-       if(valueProduct ==='-1')
+       /*
+       var oculto = $("#add-cart").hasClass('hidden');
+       var descatalogado = $("#inputdescatalogado").is(":checked");
+       if(descatalogado)
        {
-           alert("Tienes que seleccionar un producto");
+            if(!oculto)
+            {
+                $("#add-cart").addClass('hidden');
+            }
        }
        else
        {
+           if(oculto)
+           {
+                $("#add-cart").removeClass('hidden');
+           }
+       }
+       */
+       if(valueProduct ==='-1')
+       {
+           alert("Tienes que seleccionar un producto");
+           $("#editor-panel").addClass("hidden");
+           $("#editor-actions").addClass("hidden");
+       }
+       else
+       {
+       $("#editor-actions").removeClass("hidden");
        $("#editor-panel").removeClass("hidden");
        event.preventDefault();
        $.ajax({
           type:'GET',
-          url:'/ajax/products_ajax.php?idProducto='+valueProduct+'&opcion=2',
+          url:'/orders/products/list/'+valueProduct,
           async:true,
-          datatype:'text',
+          datatype:'html',
           success: function(data)
           { 
-              $("#editor-panel").load("/ajax/order.html", function(responseText, statusTxt, xhr)
-              {
-                  if(statusTxt=="success")
-                  {
-                      var inputs = document.getElementById('editor-panel').getElementsByTagName('input');
-                      console.log("datos"+data);
-                      mostrarDatos(inputs,data);
-                  }
-                  if(statusTxt=="error")
-                  {
-                      alert("Error:"+xhr.status+":"+xhr.statusText);
-                  }
-              });
-              $("#editor-actions").removeClass("hidden");
+              $("#editor-panel").html(data);
           },
           error: function(jqXHR, exception)
           {
@@ -141,24 +148,7 @@ $("document").ready(function(){
           }
        });
        }
-    });
-    
-    function mostrarDatos(inputs, data)
-    {
-        var descatalogado = data.substring(data.lastIndexOf('*')+1,data.lastIndexOf('@'));
-        var identificador = data.substring(0, data.indexOf("#"));
-        identificador = identificador.replace(/\s/g,'');
-        var datos = data.substring(0,data.lastIndexOf("*"));
-        inputdata = datos.substring(datos.indexOf('#')+1);
-        inputdata = inputdata.split('*');
-        inputs[0].value = inputdata[0];
-        $("#descripciontext").val(inputdata[2]);
-        var checked = (descatalogado ==='1' )?true:false;
-        $("#inputdescatalogado").prop("checked",checked);
-        $("#editor-actions").removeClass("hidden");
-        $("#inputidproducto").val(identificador);
-    }
-      
+    });     
 });
  
    $("button#order-search").click(function(event){
@@ -365,7 +355,6 @@ function mal(parametro)
     parametro.parentNode.parentNode.className = "form-group has-error";
 }
 
-/*Fin */
 /*Validación formulario usuarios */
 function contieneEspacios(str)
 {

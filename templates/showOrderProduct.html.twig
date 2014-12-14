@@ -2,19 +2,25 @@
        <hr width="40%"/>
 </div>
 <div class="panel panel-body">
-        <form role="form" class="form-horizontal">
+    {% if flash['error'] %}
+        <div class="alert alert-danger">{{ flash['error'] }} </div>
+    {% endif %}
+    {%if productos %}
+        <form id="form-product" role="form" class="form-horizontal">
             <div id="errores"></div>
             <div class="form-group">
                 <label for="inputnombre" class="col-md-4 col-xs-4 control-label">Nombre producto</label>
                 <div class="col-md-4 col-xs-4 control-label">
-                    <input id="inputnombre" name="inputnombre" required type="text" disabled="true" />
-                    <input type="hidden" name="inputidproducto" id="inputidproducto"/>
+                    <input id="inputnombre" name="inputnombre" required type="text" readonly="readonly" value="{{ productos.nombre_producto }}" />
+                    <input type="hidden" name="inputidproducto" id="inputidproducto" readonly="readonly" value="{{ productos.id }}"/>
                 </div>
             </div>
             <div class="form-group">
                 <label for="descripciontext" class="col-md-4 col-xs-4 control-label">Descripcion</label>
                 <div class="col-md-4 col-xs-4 control-label">
-                    <textarea cols="30" rows="10" id="descripciontext" name="descripciontext" disabled="true"></textarea>
+                    <textarea cols="30" rows="10" id="descripciontext" name="descripciontext" readonly="readonly">
+                        {{ productos.descripcion }}
+                    </textarea>
                 </div>
             </div>
             <div class="form-group">
@@ -22,13 +28,19 @@
                 <div class="col-md-2 col-xs-2 control-label">
                     <input id="inputcantidad" name="inputcantidad" class="form-control" min="1" step="1" value="1" required type="number" />
                 </div>
+                <div class="row">
+                    <span class="form-control-static">En inventario {{ productos.cantidad_stock }} productos </span>
+                </div>
             </div>
             <div class="form-group">
                 <label for="inputdescatalogado" class="col-md-4 col-xs-4 control-label">Descatalogado</label>
                 <div class="col-md-4 col-xs-4 control-label">
-                    <input id="inputdescatalogado" name="inputdescatalogado" class="form-control" disabled="true" required type="checkbox" />
+                    <input id="inputdescatalogado" name="inputdescatalogado" class="form-control" {% if (productos['descatalogado']== '1') %} checked="checked"{% endif %} readonly="readonly" type="checkbox" readonly="readonly"/>
                 </div>
             </div>
         </form>
+    {% else %}
+        <div class="alert alert-info">No existe ningun producto segun la seleccion escogida </div>
+    {% endif %}
 </div>
    

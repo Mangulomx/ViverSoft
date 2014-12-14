@@ -3,12 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/wamp/www/viver/templates/index.html</file>
+            <file>file:/C:/wamp/www/viver/routes/orderline.php</file>
             <file>file:/C:/wamp/www/viver/public/ajax.php</file>
-            <file>file:/C:/wamp/www/viver/public/ajax/products_ajax.php</file>
+            <file>file:/C:/wamp/www/viver/templates/index.html</file>
             <file>file:/C:/wamp/www/viver/public/ajax/functions/function_orders.php</file>
+            <file>file:/C:/wamp/www/viver/templates/showOrderProduct.html.twig</file>
+            <file>file:/C:/wamp/www/viver/public/index.php</file>
             <file>file:/C:/wamp/www/viver/public/js/main.js</file>
-            <file>file:/C:/wamp/www/viver/templates/order_search.html.twig</file>
+            <file>file:/C:/wamp/www/viver/public/ajax/products_ajax.php</file>
+            <file>file:/C:/wamp/www/viver/templates/product_search.html.twig</file>
+            <file>file:/C:/wamp/www/viver/templates/base.html.twig</file>
+            <file>file:/C:/wamp/www/viver/templates/showCart.html.twig</file>
+            <file>file:/C:/wamp/www/viver/routes/orders.php</file>
+            <file>file:/C:/wamp/www/viver/templates/providerindex.html.twig</file>
         </group>
     </open-files>
 </project-private>

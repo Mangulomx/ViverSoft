@@ -1,12 +1,4 @@
-{% extends "base.html.twig" %}
-{% block title %} Gestión de pedidos {% endblock %}
-{% block content %}
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title"><i class="icon-shopping-cart"></i> Carrito de compra</h3>
-        </div>
-    </div>
-   <div class="panel-body">
+<div class="panel-body">
        {% if flash['info'] %}
            <div class="alert alert-danger">{{flash['info']}}</div>
        {%endif%}
@@ -26,23 +18,23 @@
             </thead>
             <tbody>
             {% set total = 0 %}
-                {% for i,producto in productos %}
-                {% set cantidad = producto.precioVenta * cantidad[i] %}
-                {% set total+=cantidad %}
+                {% for producto in productos %}
+                {% set subtotal = producto.precioVenta * cantidad[loop.index-1] %}
+                {% set total = total + cantidad[loop.index-1] %}
                 <tr>
                     <td class="text-center">{{ producto.id }}</td>
                     <td class="text-center">{{ producto.nombre_producto }}</td>
                     <td class="text-center">{{ producto.descripcion }}</td>
                     <td class="text-center">{{ producto.precioVenta }}</td>
-                    <td class="text-center"><input type="number" name="inputcantidad" id="inputcantidad" min="1" max="999" value="{{ cantidad[i] }}" /></td>
-                    <td class="text-center">{{ cantidad }}</td>
+                    <td class="text-center"><input type="number" name="inputcantidad" min="1" max="999" value="{{ cantidad[loop.index-1] }}" /></td>
+                    <td class="text-center">{{ subtotal | round(2,'floor') }}</td>
                 </tr>
                 {% endfor %}   
             </tbody>
             <tfooter>
                 <tr colspan="4">
                     <td class="style-strong1">Total:</td>
-                    <td>{{ total }}<span>&euro;</span></td>
+                    <td>{{ total | round(2,'floor') }}<span>&euro;</span></td>
                 </tr>
             </tfooter>
         </table>
@@ -50,6 +42,6 @@
           <div class="alert alert-info">No hay productos en el carrito que mostrar</div>
       {% endif %}
       </form>
-    </div>
-{% endblock %}
+</div>
+
 
