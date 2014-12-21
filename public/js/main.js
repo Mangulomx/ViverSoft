@@ -13,8 +13,48 @@ $("document").ready(function(){
        $("button[type=submit]").attr("disabled");
        
    });
-
- $("#search-provider").bind("focus keypress", function(event){
+   $("#date1").datepicker();
+   $("#date2").datepicker();
+   $("button#insert-order").click(function()
+   {
+      document.location.href = "/orders/insert"; 
+   });
+   
+ $("#filtro_estado").change(function(){
+     var optionselected = $(this).find("option:selected");
+     var valueselected = optionselected.val();
+     var filtro = $(this).attr('id');
+    if(valueselected == '-1')
+    {
+         alert("tienes que seleccinar un estado");
+    }
+    else
+    {
+        filterCallback(valueselected, filtro);
+    }
+ });
+ $("#filtro_referencia").keypress(function(event)
+ {
+    event.preventDefault();
+    var key = event.witch;
+    if(key == 13)
+    {
+        event.preventDefault();
+        var value_ref = $(this).val();
+        var filtro = $(this).attr('id');
+        var is_valid = validarCampo(value_ref,/^d{3,6}$/);
+        if (is_valid)
+        {
+            filterCallback(value_ref,filtro);
+        }
+        else
+        {
+             alert("solo puede aceptar el campo de filtro referencia digitos entre 3 y 6 caracteres");
+        } 
+    }
+    
+ });
+ $("#search-provider").bind("focus keypress", function(){
 
         var valuesearch =$(this).val(); //Obtengo el valor de mi campo de ajax
         if (valuesearch.length > 2)
@@ -52,14 +92,15 @@ $("document").ready(function(){
                 }});
          }
  });  
-   
+     
    $("#box-modal").on("shown",function(event)
    {
        $(this).find('.modal-body').css({
               width:'auto', 
               height:'auto',
-              'max-height':'100%'
+              maxheight:'100%'
        });
+     
        $("button#add-cart").click(function()
        {
             
@@ -85,7 +126,7 @@ $("document").ready(function(){
        
        $("#selectproductname").change(function(){
        var valueProduct = $(this).val();
-       /*
+
        var oculto = $("#add-cart").hasClass('hidden');
        var descatalogado = $("#inputdescatalogado").is(":checked");
        if(descatalogado)
@@ -102,7 +143,6 @@ $("document").ready(function(){
                 $("#add-cart").removeClass('hidden');
            }
        }
-       */
        if(valueProduct ==='-1')
        {
            alert("Tienes que seleccionar un producto");
@@ -211,7 +251,11 @@ $("document").ready(function(){
       }
    }); 
 });
-
+filterCallback = function(value, filter)
+{
+    var url = "/orders/list/"+value+"/"+filter;
+    $(location).attr('href',url); 
+}
 function getcheckBoxValues()
 {
    
@@ -370,7 +414,7 @@ function contieneEspacios(str)
     return espacios;
 }
 
-function validarCampo(valor, expr_reg, campo)
+function validarCampo(valor, expr_reg)
 {
     error = true;
     //Compruebo que el valor del campo no este vacio
@@ -395,5 +439,32 @@ function validarCampo(valor, expr_reg, campo)
     return error;
 }
 /*Fin*/
+
+function confirmationDelete(valor, identificador)
+{
+
+    var enviar;
+    var cadena="¿Realmente desea eliminar el";
+    //Hago un switch por si hago mas casos
+    switch(identificador)
+    {
+        case 'empleado':
+        {
+            cadena+=" ejemplar:"+valor+"?";
+           
+        }
+    }
+    var confirmar = confirm(cadena);
+    if(confirmar)
+    {
+       enviar = true;
+        
+    }
+    else
+    {
+       enviar = false;
+    }
+    return enviar;
+}
 
 

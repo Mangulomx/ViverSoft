@@ -1,10 +1,3 @@
-<div class="panel-body">
-       {% if flash['info'] %}
-           <div class="alert alert-danger">{{flash['info']}}</div>
-       {%endif%}
-        <form role="form" class="form-horizontal">
-        <h2>Deseo que envien:</h2>
-        {% if productos %}
         <table class="table table-striped table-reponsive table-bordered">
             <thead>
                 <tr>
@@ -14,6 +7,9 @@
                     <th>Precio unitario</th>
                     <th>Cantidad</th>
                     <th>Subtotal</th>
+                    {% if ( action == 'view' ) or ( action == 'removed' ) %}
+                    <th>Acciones</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -23,11 +19,16 @@
                 {% set total = total + cantidad[loop.index-1] %}
                 <tr>
                     <td class="text-center">{{ producto.id }}</td>
-                    <td class="text-center">{{ producto.nombre_producto }}</td>
+                    <td class="text-center">{{ producto.nombre_producto }}
+                    <input type="hidden" id="inputnombre" name="inputnombre" value="{{ producto.nombre_producto }}" />
+                    </td>
                     <td class="text-center">{{ producto.descripcion }}</td>
                     <td class="text-center">{{ producto.precioVenta }}</td>
                     <td class="text-center"><input type="number" name="inputcantidad" min="1" max="999" value="{{ cantidad[loop.index-1] }}" /></td>
                     <td class="text-center">{{ subtotal | round(2,'floor') }}</td>
+                    {% if ( action == 'view' ) or ( action == 'removed' ) %}
+                    <td><button type="submit" name="delete-productCart" value="{{ producto.id }}" id="delete-productCart" class="btn btn-danger"><i class="fa fa-trash-o fa-fw"></i>Eliminar</button></td>
+                    {% endif %}
                 </tr>
                 {% endfor %}   
             </tbody>
@@ -38,10 +39,3 @@
                 </tr>
             </tfooter>
         </table>
-      {% else %}
-          <div class="alert alert-info">No hay productos en el carrito que mostrar</div>
-      {% endif %}
-      </form>
-</div>
-
-

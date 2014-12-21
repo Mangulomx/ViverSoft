@@ -68,7 +68,7 @@
                     <select name="selectusuario">
                         <option value='-1'>Seleccione un usuario</option>
                         {% for i, usuario in usuarios %}
-                            <option value="{{ i }}"{%if usuario['id'] == empleado['usuario_idusuario'] %} selected="true" {% endif %}> {{ usuario['id'] }} </option>
+                            <option value="{{ usuario['id'] }}"{%if usuario['id'] == empleado['usuario_idusuario'] %} selected="true" {% endif %}> {{ usuario['id'] }} </option>
                         {% endfor %}
                     </select>
                 </div>

@@ -12,6 +12,6 @@ switch($opcion)
         {
             $orderHTML = getOrdersProduct($_POST['parametro1'],$_POST['parametro2']);
             echo trim($orderHTML);
-            
-        }   
+            break;
+        }       
 }

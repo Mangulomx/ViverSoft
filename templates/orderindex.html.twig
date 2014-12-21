@@ -1,0 +1,99 @@
+{% extends "base.html.twig" %}
+{% block title %} Gestión de pedidos {% endblock %}
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-user"></i> Gestión de pedidos</h3>
+        </div>
+    </div>
+   <div class="panel-body">
+   {% set EstadoPedido = ['Pendiente','Procesando','En transporte','Completo','Devuelto','Cancelado'] %}
+       {% if flash['success'] %}
+           <div class="alert alert-success">{{ flash['success'] }}</div>
+       {% endif %}
+       {% if flash['error'] %}
+           <div class="alert alert-danger">{{ flash['error'] }}</div>
+       {%endif%}
+        <form role="form" class="form-horizontal" action="{{ urlFor('deleteOrder') }}" method="POST">
+        <h2>Listado de pedidos</h2>
+        <div class="BoxFiltro">
+            <label>Filtrar pedidos</label>
+            <div class="clearfix">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="filtro_referencia" id="filtro_referencia" placeholder="Introduce el filtro de referencia" />
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select id="filtro_estado" name="filtro_estado" id="filtro_estado">
+                        <option value="-1" selected>filtrar por Estado</option>
+                        <option value="0">Pendiente</option>
+                        <option value="1">Procesando</option>
+                        <option value="2">En transporte</option>
+                        <option value="3">Completo</option>
+                        <option value="4">Devuelto</option>
+                        <option value="5">Cancelado</option>
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <label>Filtra por fechas:</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input id="date1" class="form-control input-md" placeholder="a partir de" type="text" />
+                            <span class="input-group-addon">
+                                <i class="icon-calendar"></i>
+                            </span>
+                        </div>
+                        <div class="col-md-6">
+                            <input id="date2" class="form-control input-md" placeholder="hasta" type="text" />
+                            <span class="input-group-addon">
+                                <i class="icon-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if pedidos %}
+        <table class="table table-striped table-responsive table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">#pedido</th>
+                    <th class="text-center"># referencia</th>
+                    <th class="text-center">Fecha de pedido</th>
+                    <th class="text-center">Estado</th>
+                    <th class="text-center">Total</th>
+                    {% if is_admin %}
+                    <th class="text-center">Acciones</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos %}
+                <tr>
+                    <td class="text-center">{{ pedido.id }}</td>
+                    <td class="text-center">{{ pedido.referencia }}</td>
+                    <td class="text-center">{{ pedido.fechapedido }}</td>
+                    <td class="text-center">
+                    <select name="estado" id="estado">
+                        <option value="-1">Seleccione un estado</option>
+                        {% for i, estado in EstadoPedido %}
+                            <option value="{{ i }}" {% if (pedido.estado == estado) %} selected="true" {% endif %}>{{ estado }} </option>
+                        {% endfor %}
+                    </select>
+                    </td>
+                    <td class="text-center">{{ pedido.total }}</td>
+                    {% if is_admin %}
+                    <td class="text-center"><button type="submit" class="btn btn-danger text-center" name="eliminar" value="{{ pedido.id }}"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
+                    {% endif %}
+                </tr>
+                {% endfor %}   
+            </tbody>
+        </table>
+      {% else %}
+          <div class="alert alert-info">No hay pedidos para mostrar</div>
+      {% endif %}
+      </form>
+    </div>
+{% endblock %}

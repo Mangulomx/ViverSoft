@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+{% block title %} Gestión de pedidos {% endblock %}
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> Listado de carrito</h3>
+        </div>
+    </div>
+    <div class="panel-body">
+        {% if flash['error'] %}
+            <div class="alert alert-danger">
+                {{ flash['error'] }}
+            </div>
+       {% endif %}
+       {% if flash['info'] %}
+            {% for info in flash['info'] %}
+                <div class="alert alert-info">{{ info }}</div>
+           {% endfor %}
+       {%endif%}
+        <form role="form" class="form-horizontal" action="{{ urlFor('deleteLine') }}" method="POST">
+        <h2>Deseo que envien:</h2>
+        {% if productos|length > 0 %}
+            {% include 'showCart.html.twig' %}
+            <div class="form-group text-center">
+                <button type="button" name="insert-order" id="insert-order" class="btn-large btn-primary">Insertar pedido</button> 
+            </div>
+        {% else %}
+          <div class="alert alert-info">No hay productos en el carrito que mostrar</div>
+      {% endif %}
+      </form>
+    </div>       
+{% endblock %}
+

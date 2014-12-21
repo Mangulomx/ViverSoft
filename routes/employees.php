@@ -259,4 +259,3 @@ function getEmpleado($identificador)
     where('emp.id',$identificador)->
     left_outer_join('usuario',array('emp.usuario_idusuario', '=', 'u.id'),'u')->order_by_asc('emp.nieempleado')->find_one();
 }
-

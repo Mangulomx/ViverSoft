@@ -48,7 +48,7 @@
             document.getElementById('inputproduct').addEventListener('blur',function()
             {
                 var regExp_product = /^\D{3,}$/;
-                validar = validarCampo(this.value, regExp_product, 'producto');
+                validar = validarCampo(this.value, regExp_product);
                 document.forms[0].es_valid.value = validar;
                 if(validar)
                 {

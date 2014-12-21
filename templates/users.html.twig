@@ -3,12 +3,14 @@
 {% block content %}
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Gestión de usuarios</h3>
+            <h3 class="panel-title"><i class="fa fa-user"></i> Gestión de usuarios</h3>
         </div>
     </div>
    <div class="panel-body">
        {% if flash['error'] %}
-           <div class="alert alert-danger">{{flash['error']}}</div>
+           {% for error in flash['error'] %}
+           <div class="alert alert-danger">{{ error }}</div>
+           {% endfor %}
        {%endif%}
         <form role="form" class="form-horizontal" onsubmit="return getcheckBoxValues();return false;" method="POST" action="{{ urlFor('userDelete') }}">
         {% if is_admin %} 

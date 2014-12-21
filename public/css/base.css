@@ -99,7 +99,19 @@ header, footer, #wrapper
     background-position:center;
     height:100px;
 }
-
+/*Estilos para los filtros */
+.BoxFiltro {
+    background-color: #CCE8FC;
+    border: 1px solid #CCE8FC;
+    border-radius: 5px;
+    padding: 10px 15px;
+    min-height: 107px;
+    margin-bottom: 25px;
+}
+.boxSelect {
+    margin-top: 10px;
+}
+/* Fin de estilos */
 /*Estilos de colores parrafos */
 .style-blue
 {

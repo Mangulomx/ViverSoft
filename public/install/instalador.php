@@ -86,7 +86,7 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <button type="submit" name="instalar" class="btn btn-primary">Enviar</button>
+                <button type="submit" name="instalar" class="btn btn-primary">Instalar</button>
                 <button type="reset" name="Limpiar" class="btn btn-primary">Limpiar</button>
             </div>
         </form>

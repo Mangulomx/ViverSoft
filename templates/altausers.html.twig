@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Gestion de usuarios {%endblock%}
+{% block title %}<i class="fa fa-user"></i>Gestion de usuarios {%endblock%}
 {% block content %}
     <div class="panel panel-default">
         <div class="panel panel-heading">
@@ -57,7 +57,7 @@
         document.getElementById('inputuser').addEventListener('blur',function()
         {
            var regExp_user = /^[a-z0-9_-]{3,15}$/;
-           validar = validarCampo(this.value,regExp_user,'usuario');
+           validar = validarCampo(this.value,regExp_user);
            if(validar)
            {
                bien(this);
@@ -71,7 +71,7 @@
         document.getElementById('inputpassword').addEventListener('blur',function()
         {
             var regExp_password=/(^(?=.*[a-z])(?=.*[A-Z])(?=.*\d){6,20}.+$)/;
-            validar = validarCampo(this.value,regExp_password,'contraseña');
+            validar = validarCampo(this.value,regExp_password);
             if(validar)
             {
                 bien(this);

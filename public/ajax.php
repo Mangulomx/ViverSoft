@@ -10,7 +10,7 @@ switch($opcion)
     case '1':
     case '2':
     {
-        $empleado = getEmpleado($identificador);
+        $empleado = getEmpleado($identificador,$opcion);
         $es_admin = ($empleado['admin']==1)?true:false;
         if($opcion ==='1')
         {
@@ -86,21 +86,21 @@ EOD;
             <div class='col-lg-4 col-md-4 col-sm-4'>
                <div class='form-group'>
                   <label for='username'>Usuario</label>
-                  <input type='text' class='form-control' id='username' name='username' value='{$empleado['username']}' />
+                  <input type='text' class='form-control' id='username' name='username' readonly value='{$empleado['username']}' />
                </div>
             </div>
             <div class='col-lg-1 col-md-1 col-sm-1'>
             </div>
             <div class='col-lg-4 col-md-4 col-sm-4'>
                   <label for='password'>Contraseña</label>
-                  <input type='text' class='form-control' id='password' name='password' value='{$empleado['contrasenia']}' />
+                  <input type='text' class='form-control' id='password' name='password' readonly value='{$empleado['contrasenia']}' />
             </div>
         </div>
          <div class='row'>
             <div class='col-lg-6 col-md-6 col-sm-6'>
                <div class='form-group'>
                   <label for='username'>Email</label>
-                  <input type='text' class='form-control' id='email' name='email' value='{$empleado['email']}' />
+                  <input type='text' class='form-control' id='email' name='email' readonly value='{$empleado['email']}' />
                </div>
             </div>
             <div class='col-lg-1 col-md-1 col-sm-1'>
@@ -108,7 +108,7 @@ EOD;
             <div class='col-lg-4 col-md-4 col-sm-4'>
                   <div class='form-group'>
                   <label for='administrator'>¿Es administrador?</label>
-                  <input type='checkbox' class='form-control' id='administrator' name='administrator' checked='{$es_admin}' />
+                  <input type='checkbox' class='form-control' id='administrator' readonly name='administrator' checked='{$es_admin}' />
                   </div>
             </div>
         </div>
@@ -123,13 +123,14 @@ EOD;
     }
 }
 //Obtengo los datos de los empleados según el nie del empleado que le he pasado
-function getEmpleado($id)
+function getEmpleado($id,$opcion)
 {
+    $column = ($opcion == 1) ? 'emp.id' : 'u.id';
     return ORM::for_table('empleado')->
         table_alias('emp')->
         select('emp.*')->
         select('emp.email','emailemp')->
         select('u.*')->
-        where('emp.id',$id)->
+        where($column,$id)->
         left_outer_join('usuario',array('emp.usuario_idusuario', '=', 'u.id'),'u')->order_by_asc('emp.id')->find_one();
 }

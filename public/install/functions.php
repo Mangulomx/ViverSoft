@@ -116,6 +116,11 @@ EOD;
             `nombreproveedor` VARCHAR(45) NOT NULL,
             `direccion` VARCHAR(150) NOT NULL,
             `telefono` VARCHAR(15) NOT NULL,
+            `ciudad` VARCHAR(50) NOT NULL,
+            `region` VARCHAR(50) NULL,
+            `pais` VARCHAR(10) NULL,
+            `codpostal` VARCHAR(10) NULL,
+            UNIQUE KEY `variable_nieproveedor_uk`(`nieproveedor`),
             PRIMARY KEY (`id`))
             ENGINE = InnoDB DEFAULT CHARSET=utf8;");
             
@@ -127,10 +132,10 @@ EOD;
             `nombre_latin` VARCHAR(70) NULL,
             `peso` DECIMAL(15,2) UNSIGNED NULL,
             `descatalogado` TINYINT(1) NOT NULL,
-            `dimensiones` VARCHAR(15) NOT NULL,
+            `dimensiones` VARCHAR(15) NULL,
             `descripcion` TEXT NULL,
             `cantidad_stock` SMALLINT UNSIGNED NOT NULL,
-            `precionVenta` DECIMAL(15,2) UNSIGNED NOT NULL,
+            `precioVenta` DECIMAL(15,2) UNSIGNED NOT NULL,
             `precioProveedor` DECIMAL(15,2) UNSIGNED NOT NULL,
             `gama_id` int(11) UNSIGNED NOT NULL,
             `proveedor_id` int(11) UNSIGNED NOT NULL,
@@ -154,16 +159,17 @@ EOD;
             $dbh->exec("CREATE TABLE IF NOT EXISTS `cliente` (
             `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
             `niecliente` VARCHAR(10) NOT NULL,
-            `nombrecliente` VARCHAR(45) NULL,
-            `apellido` VARCHAR(50) NULL,
+            `nombrecliente` VARCHAR(45) NOT NULL,
+            `apellidos` VARCHAR(50) NOT NULL,
             `telefono` VARCHAR(45) NOT NULL,
-            `fax` VARCHAR(15) NOT NULL,
+            `fax` VARCHAR(15) NULL,
             `lineadireccion1` VARCHAR(50) NOT NULL,
             `lineadireccion2` VARCHAR(50) NULL,
             `ciudad` VARCHAR(50) NOT NULL,
             `region` VARCHAR(50) NULL,
             `pais` VARCHAR(10) NULL,
             `codpostal` VARCHAR(10) NULL,
+            UNIQUE KEY `variable_niecliente_uk`(`niecliente`),
             PRIMARY KEY (`id`))
             ENGINE = InnoDB DEFAULT CHARSET=utf8;");
             
@@ -227,51 +233,32 @@ EOD;
             ON DELETE CASCADE
             ON UPDATE CASCADE
             )ENGINE = InnoDB DEFAULT CHARSET=utf8;");
-            
-            #tabla transportista
-            
-            $dbh->exec("CREATE TABLE IF NOT EXISTS `transportista` (
-            `compañia` VARCHAR(50) NOT NULL,
-            `nombrecontacto` VARCHAR(50) NOT NULL,
-            `direccion` VARCHAR(150) NOT NULL,
-            `localidad` VARCHAR(50) NULL,
-            `estado` VARCHAR(10) NULL,
-            `codigopostal` VARCHAR(10) NULL,
-            PRIMARY KEY (`compañia`))
-            ENGINE = InnoDB DEFAULT CHARSET=utf8;");
-            
+                     
             #tabla pedido
             
             $dbh->exec("CREATE TABLE IF NOT EXISTS `pedido` (
-        `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-        `fechapedido` DATE NOT NULL,
-        `fechasuministro` DATE NOT NULL,
-        `fechaentrega` DATE NOT NULL,
-        `estado` VARCHAR(15) NOT NULL,
-        `comentarios` TEXT NULL,
-        `proveedor_id` int(11) UNSIGNED NOT NULL,
-        `empleado_id` int(11) UNSIGNED NOT NULL,
-        `transportista_compañia` VARCHAR(50) NOT NULL,
-        PRIMARY KEY (`id`),
-        INDEX `pedido_proveedor_id_fk_idx` (`proveedor_id` ASC),
-        INDEX `pedido_empleado_id_fk_idx` (`empleado_id` ASC),
-        INDEX `pedido_transportista_compañia_fk_idx` (`transportista_compañia` ASC),
-        CONSTRAINT `pedido_proveedor_id_fk`
-        FOREIGN KEY (`proveedor_id`)
-        REFERENCES `proveedor` (`id`)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-        CONSTRAINT `pedido_empleado_id_fk`
-        FOREIGN KEY (`empleado_id`)
-        REFERENCES `empleado` (`id`)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-        CONSTRAINT `pedido_transportista_compañia_fk`
-        FOREIGN KEY (`transportista_compañia`)
-        REFERENCES `transportista` (`compañia`)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE)
-        ENGINE = InnoDB DEFAULT CHARSET=utf8;");
+            `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+            `referencia` VARCHAR(10) NOT NULL,
+            `fechapedido` DATE NOT NULL,
+            `estado` VARCHAR(15) NOT NULL,
+            `comentarios` TEXT NULL,
+            `proveedor_id` int(11) UNSIGNED NOT NULL,
+            `empleado_id` int(11) UNSIGNED NOT NULL,
+            UNIQUE KEY `referencia_uk`(`referencia`),
+            PRIMARY KEY (`id`),
+            INDEX `pedido_proveedor_id_fk_idx` (`proveedor_id` ASC),
+            INDEX `pedido_empleado_id_fk_idx` (`empleado_id` ASC),
+            CONSTRAINT `pedido_proveedor_id_fk`
+            FOREIGN KEY (`proveedor_id`)
+            REFERENCES `proveedor` (`id`)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE,
+            CONSTRAINT `pedido_empleado_id_fk`
+            FOREIGN KEY (`empleado_id`)
+            REFERENCES `empleado` (`id`)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE)
+            ENGINE = InnoDB DEFAULT CHARSET=utf8;");
         
         #Tabla linea pedido
             
@@ -324,7 +311,7 @@ EOD;
         #tabla fitosanitarios
         
         $dbh->exec("CREATE TABLE IF NOT EXISTS `fitosanitarios`(
-        `id` INT(11) UNSIGNED NOT NULL,
+        `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
         `tipofuncion` varchar(150) NOT NULL,
         `tipoenvase` varchar(30) NOT NULL,
         `composicion` VARCHAR(150) NOT NULL,

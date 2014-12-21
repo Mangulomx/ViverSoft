@@ -2,9 +2,9 @@
 {% block content1 %}
     <div class="loginbox">
     <div class="panel panel-primary">
-        <div class="panel-heading center-block">{{title}}</div>
+        <div class="panel-heading center-block">{{ title }}</div>
         <div class="panel-body">
-            <form role="form"  method="post" action="{{url}}">
+            <form role="form"  method="post" action="{{ url }}">
                 {% if flash['error'] %}
                     <div class="alert alert-danger">
                         {{ flash['error'] }}

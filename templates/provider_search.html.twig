@@ -7,6 +7,9 @@
                 <h3><i class="fa fa-truck"></i> Proveedores</h3>
             </div>
             <div class="panel-body">
+                {%if flash['error'] %}
+                    <div class="alert alert-danger">{{ flash['error'] }} </div>
+                {% endif %}
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="search-provider">Busqueda de proveedores</label>
                     <span class="label tooltip" data-original-title="Busque un proveedor existente introduciendo las primeras letras de su nombre." data-toogle="tooltip" title=""></span>
