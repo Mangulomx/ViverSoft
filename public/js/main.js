@@ -274,6 +274,7 @@ function getcheckBoxValues()
     if(!sw)
     {
         alert("Tienes que seleccionar los campos que quieres eliminar");
+        sw = false;
     }
     else
     {
@@ -282,7 +283,7 @@ function getcheckBoxValues()
         return confirm("Quieres eliminar "+$subcad+" indentificador"+$subcad1+""+valores.join(" , "));
         document.forms[0].submit();
     } 
-   
+    return sw; 
 }
 
 function showEmployee(element,opcion)
@@ -450,7 +451,7 @@ function confirmationDelete(valor, identificador)
     {
         case 'empleado':
         {
-            cadena+=" ejemplar:"+valor+"?";
+            cadena+=" empleado:"+valor+"?";
            
         }
     }

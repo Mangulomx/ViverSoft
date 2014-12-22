@@ -8,9 +8,7 @@
     </div>
    <div class="panel-body">
        {% if flash['error'] %}
-           {% for error in flash['error'] %}
-           <div class="alert alert-danger">{{ error }}</div>
-           {% endfor %}
+           <div class="alert alert-danger">{{ flash['error'] }}</div>
        {%endif%}
         <form role="form" class="form-horizontal" onsubmit="return getcheckBoxValues();return false;" method="POST" action="{{ urlFor('userDelete') }}">
         {% if is_admin %} 

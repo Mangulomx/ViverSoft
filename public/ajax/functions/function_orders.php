@@ -43,6 +43,7 @@ function GetProducts($valor,$valor1)
     select('gama.*')->
     inner_join('gama',array('producto.gama_id','=','gama.id'))->
     where('gama.id',$valor1)->
+    where('proveedor_id',$_SESSION['idproveedor'])->
     where_like('nombre_producto',"%{$valor}%")->find_many();
 }
 
