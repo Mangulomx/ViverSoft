@@ -313,7 +313,7 @@ function validar(form,fieldsForm)
             {
                 errores+="\n El campo "+form.elements[i].name + " no puede estar vacio";
                 enviar = false;  
-            }  
+            }
             if(elementClassName.indexOf('has-error')!==-1)
             {
                 if(form.elements[i].type==="select-one")
@@ -467,5 +467,6 @@ function confirmationDelete(valor, identificador)
     }
     return enviar;
 }
+
 
 

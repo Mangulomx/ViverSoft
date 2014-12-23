@@ -41,9 +41,15 @@ $app->get('/logout', function() use($app)
    //Deshacemos la variable de de sesion
    unset($_SESSION['user_id']);
    //Deshacemos todas la variables de sesion del carrito
-   foreach($_SESSION['cart-items'] as $id => $value)
+   if(isset($_SESSION['cart-items']))
    {
-       unset($_SESSION['cart-items'][$id]);
+        if(count($_SESSION['cart-items'])>0)
+        {
+            foreach($_SESSION['cart-items'] as $id => $value)
+            {
+                unset($_SESSION['cart-items'][$id]);
+            }
+        }
    }
    $app->redirect($app->urlFor('frontpage'));
 })->name('logout');

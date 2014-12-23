@@ -6,10 +6,13 @@
             <file>file:/C:/wamp/www/viver/routes/orderline.php</file>
             <file>file:/C:/wamp/www/viver/public/ajax.php</file>
             <file>file:/C:/wamp/www/viver/templates/index.html</file>
+            <file>file:/C:/wamp/www/viver/public/ajax/functions/function_orders.php</file>
             <file>file:/C:/wamp/www/viver/templates/showOrderProduct.html.twig</file>
             <file>file:/C:/wamp/www/viver/vendor/slim/slim/Slim/Middleware/Flash.php</file>
             <file>file:/C:/wamp/www/viver/templates/users.html.twig</file>
+            <file>file:/C:/wamp/www/viver/templates/altausers.html.twig</file>
             <file>file:/C:/wamp/www/viver/public/index.php</file>
+            <file>file:/C:/wamp/www/viver/public/ajax/products_ajax.php</file>
             <file>file:/C:/wamp/www/viver/templates/cartlist.html.twig</file>
             <file>file:/C:/wamp/www/viver/templates/base.html.twig</file>
             <file>file:/C:/wamp/www/viver/vendor/slim/slim/Slim/Middleware/MethodOverride.php</file>
